@@ -7,12 +7,17 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "e2pg": "./e2pg/e2pg -config ./e2pg/config.json"
+    "e2pg": "./e2pg/e2pg -config ./e2pg/config.json",
+    "drizzle:introspect": "drizzle-kit introspect:pg"
   },
   "dependencies": {
+    "dotenv": "^16.3.1",
+    "drizzle-orm": "^0.28.6",
     "next": "13.5.4",
+    "postgres": "^3.3.5",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "viem": "^1.15.1"
   },
   "devDependencies": {
     "@types/node": "^20",
