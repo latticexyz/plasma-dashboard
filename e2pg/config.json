@@ -1,0 +1,12 @@
+[
+    {
+        "name": "quarry",
+        "id": 2,
+        "chain": 900,
+        "concurrency": 1,
+        "batch": 1,
+        "eth": "https://quarry-l1.linfra.xyz/",
+        "pg": "postgres:///e2pg",
+        "integrations": ["txinputs"]
+    }
+]
