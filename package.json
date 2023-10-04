@@ -19,6 +19,7 @@
     "postgres": "^3.3.5",
     "react": "^18",
     "react-dom": "^18",
+    "react-intersection-observer": "^9.5.2",
     "viem": "^1.15.1"
   },
   "devDependencies": {

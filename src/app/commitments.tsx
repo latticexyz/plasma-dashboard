@@ -1,13 +1,16 @@
 "use client";
 
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { bigIntMax } from "@latticexyz/common/utils";
 import { InputCommitment, getInputCommitments } from "./getInputCommitments";
 import { INPUT_COMMITMENT_FETCH_RANGE } from "./constants";
+import { useInView } from "react-intersection-observer";
 
 type Props = {
   initialInputCommitments: InputCommitment[];
 };
+
+const LIST_ITEM_CLASS = "input-commitment-item";
 
 export default function Commitments({ initialInputCommitments }: Props) {
   const [inputCommitments, setInputCommitments] = useState(
@@ -17,22 +20,18 @@ export default function Commitments({ initialInputCommitments }: Props) {
 
   const inputCommitmentContainerRef = useRef<HTMLDivElement>(null);
 
-  const getInputCommitmentItemHeight = useCallback(() => {
-    const firstListItem = inputCommitmentContainerRef.current
-      ?.firstElementChild as HTMLElement;
-    return firstListItem.offsetHeight || 0;
-  }, []);
+  const { ref: topRef, inView: topInView } = useInView();
+  const { ref: bottomRef, inView: bottomInView } = useInView();
 
-  const fetchPrecedingInputCommitments = useCallback(async () => {
+  async function fetchPrecedingInputCommitments() {
     if (isLoading) return;
     setIsLoading(true);
     const firstBlockNumber = inputCommitments.at(0)?.blockNumber ?? 0n;
 
     // Store the current scroll top so we can update it after the rerender
     // to prevent the viewport from jumping
-    const itemHeight = getInputCommitmentItemHeight();
-    const currentScrollTop =
-      inputCommitmentContainerRef.current?.scrollTop || 0;
+    const previousScrollHeight =
+      inputCommitmentContainerRef.current?.scrollHeight || 0;
 
     const precedingInputCommitments = await getInputCommitments({
       from: bigIntMax(firstBlockNumber - INPUT_COMMITMENT_FETCH_RANGE, 0n),
@@ -46,19 +45,20 @@ export default function Commitments({ initialInputCommitments }: Props) {
 
     setTimeout(() => {
       if (inputCommitmentContainerRef.current) {
-        const addedHeight = precedingInputCommitments.length * itemHeight;
-        const newScrollTop = currentScrollTop + addedHeight;
-        console.log("current scroll top", currentScrollTop);
+        const newScrollHeight =
+          inputCommitmentContainerRef.current.scrollHeight;
+        const addedHeight = newScrollHeight - previousScrollHeight;
+
         console.log("added height", addedHeight);
-        console.log("new scroll top", newScrollTop);
-        inputCommitmentContainerRef.current.scrollTop = newScrollTop;
+        console.log("new scroll height", newScrollHeight);
+        inputCommitmentContainerRef.current.scrollTop += addedHeight;
       }
+
+      setIsLoading(false);
     }, 1);
+  }
 
-    setIsLoading(false);
-  }, [inputCommitments, getInputCommitmentItemHeight, isLoading]);
-
-  const fetchSucceedingInputCommitments = useCallback(async () => {
+  async function fetchSucceedingInputCommitments() {
     if (isLoading) return;
     setIsLoading(true);
 
@@ -75,7 +75,26 @@ export default function Commitments({ initialInputCommitments }: Props) {
     ]);
 
     setIsLoading(false);
-  }, [inputCommitments, isLoading]);
+  }
+
+  useEffect(() => {
+    if (topInView) {
+      console.log("calling");
+      fetchPrecedingInputCommitments();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [topInView]);
+
+  useEffect(() => {
+    if (bottomInView) {
+      fetchSucceedingInputCommitments();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [bottomInView]);
+
+  useEffect(() => {
+    console.log("inView", { topInView, bottomInView });
+  }, [topInView, bottomInView]);
 
   return (
     <div className="flex flex-col bg-green-500">
@@ -86,13 +105,20 @@ export default function Commitments({ initialInputCommitments }: Props) {
         className="overflow-y-auto flex-grow bg-red-500"
         ref={inputCommitmentContainerRef}
       >
-        {inputCommitments.map((commitment) => (
-          <div key={commitment.txHash} className="break-all">
-            block: {commitment.blockNumber?.toString()}; commitment:{" "}
-            {commitment.inputCommitment}; from: {commitment.txFrom}; to:{" "}
-            {commitment.txTo}
-          </div>
-        ))}
+        <div ref={topRef} />
+        {inputCommitments.map((commitment, index) => {
+          return (
+            <div
+              key={commitment.txHash}
+              className={`break-all ${LIST_ITEM_CLASS} h-36 bg-blue-500`}
+            >
+              block: {commitment.blockNumber?.toString()}; commitment:{" "}
+              {commitment.inputCommitment}; from: {commitment.txFrom}; to:{" "}
+              {commitment.txTo}
+            </div>
+          );
+        })}
+        <div ref={bottomRef} />
       </div>
       <button onClick={fetchSucceedingInputCommitments} disabled={isLoading}>
         {isLoading ? "Loading..." : "Fetch after"}
