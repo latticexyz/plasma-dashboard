@@ -36,13 +36,41 @@ const asAddress = (name: string) =>
     },
   })(name);
 
+// TODO: export from @latticexyz/store-sync
+export const asNumber = (name: string, columnType: string) =>
+  customType<{ data: number; driverData: string }>({
+    dataType() {
+      return columnType;
+    },
+    toDriver(data: number): string {
+      return String(data);
+    },
+    fromDriver(driverData: string): number {
+      return Number(driverData);
+    },
+  })(name);
+
+// TODO: export from @latticexyz/store-sync
+export const asBigInt = (name: string, columnType: string = "numeric") =>
+  customType<{ data: bigint; driverData: string }>({
+    dataType() {
+      return columnType;
+    },
+    toDriver(data: bigint): string {
+      return String(data);
+    },
+    fromDriver(driverData: string): bigint {
+      return BigInt(driverData);
+    },
+  })(name);
+
 export const txInputs = pgTable("tx_inputs", {
-  taskId: numeric("task_id"),
-  chainId: numeric("chain_id"),
+  taskId: asBigInt("task_id"),
+  chainId: asBigInt("chain_id"),
   blockHash: asHex("block_hash"),
-  blockNumber: numeric("block_number"),
+  blockNumber: asBigInt("block_number"),
   txHash: asHex("tx_hash"),
-  txIndex: numeric("tx_index"),
+  txIndex: asBigInt("tx_index"),
   txSigner: asAddress("tx_signer"),
   txTo: asAddress("tx_to"),
   txInput: asHex("tx_input"),

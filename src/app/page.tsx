@@ -1,18 +1,16 @@
-// import { getInputCommitments } from "./getInputCommitments";
+import { getBlockNumber } from "viem/actions";
+import Commitments from "./Commitments";
+import { client } from "./client";
+
+const WINDOW = 100n;
 
 export default async function Home() {
-  const inputCommitments = []; //await getInputCommitments();
+  const latestBlockNumber = await getBlockNumber(client);
 
   return (
     <div>
-      <h1>Database rows</h1>
-      <ul>
-        {inputCommitments.map((row) => (
-          <li key={row.txHash}>
-            block: {row.blockNumber}, hash: {row.txInput}
-          </li>
-        ))}
-      </ul>
+      <p>Current block number: {latestBlockNumber.toString()}</p>
+      <Commitments from={latestBlockNumber - WINDOW} to={latestBlockNumber} />
     </div>
   );
 }
