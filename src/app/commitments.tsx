@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { bigIntMax } from "@latticexyz/common/utils";
 import { InputCommitment, getInputCommitments } from "./getInputCommitments";
 import { INPUT_COMMITMENT_FETCH_RANGE } from "./constants";
@@ -50,9 +50,6 @@ export default function Commitments({ initialInputCommitments }: Props) {
         const newScrollHeight =
           inputCommitmentContainerRef.current.scrollHeight;
         const addedHeight = newScrollHeight - previousScrollHeight;
-
-        console.log("added height", addedHeight);
-        console.log("new scroll height", newScrollHeight);
         inputCommitmentContainerRef.current.scrollTop += addedHeight;
       }
 
@@ -81,7 +78,6 @@ export default function Commitments({ initialInputCommitments }: Props) {
 
   useEffect(() => {
     if (topInView) {
-      console.log("calling");
       fetchPrecedingInputCommitments();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
