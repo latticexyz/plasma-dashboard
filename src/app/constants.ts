@@ -1,0 +1,1 @@
+export const INPUT_COMMITMENT_FETCH_RANGE = 100n;
