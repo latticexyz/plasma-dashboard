@@ -6,19 +6,10 @@ type Props = {
 };
 
 export default async function Commitments({ from, to }: Props) {
-  if (from < 0n || to < 0n)
-    return (
-      <p>
-        invalid block range: {from.toString()} to {to.toString()}
-      </p>
-    );
-
   const inputCommitments = await getInputCommitments({
     from,
     to,
   });
-
-  console.log("input commitmentsl", inputCommitments);
 
   return (
     <div>
