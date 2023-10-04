@@ -13,7 +13,7 @@ export default async function Home() {
   });
 
   return (
-    <div>
+    <div className="flex h-screen">
       <p>Current block number: {latestBlockNumber.toString()}</p>
       <Commitments initialInputCommitments={inputCommitments} />
     </div>
