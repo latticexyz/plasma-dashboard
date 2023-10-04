@@ -4,8 +4,6 @@ import { gte, lte, and, eq } from "drizzle-orm";
 import { database } from "./database";
 import { txInputs } from "./schema";
 import { Address, Hex } from "viem";
-import dotenv from "dotenv";
-dotenv.config();
 
 const BATCHER = process.env.BATCHER as Address;
 const BATCHER_INBOX = process.env.BATCHER_INBOX as Address;

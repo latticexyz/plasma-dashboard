@@ -5,6 +5,7 @@ import { bigIntMax } from "@latticexyz/common/utils";
 import { InputCommitment, getInputCommitments } from "./getInputCommitments";
 import { INPUT_COMMITMENT_FETCH_RANGE } from "./constants";
 import { useInView } from "react-intersection-observer";
+import { useLatestBlockNumber } from "./useLatestBlockNumber";
 
 type Props = {
   initialInputCommitments: InputCommitment[];
@@ -17,6 +18,7 @@ export default function Commitments({ initialInputCommitments }: Props) {
     initialInputCommitments
   );
   const [isLoading, setIsLoading] = useState(false);
+  const latestBlockNumber = useLatestBlockNumber();
 
   const inputCommitmentContainerRef = useRef<HTMLDivElement>(null);
 
@@ -90,27 +92,23 @@ export default function Commitments({ initialInputCommitments }: Props) {
       fetchSucceedingInputCommitments();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [bottomInView]);
-
-  useEffect(() => {
-    console.log("inView", { topInView, bottomInView });
-  }, [topInView, bottomInView]);
+  }, [bottomInView, latestBlockNumber]);
 
   return (
-    <div className="flex flex-col bg-green-500">
+    <div className="flex flex-col">
       <button onClick={fetchPrecedingInputCommitments} disabled={isLoading}>
         {isLoading ? "Loading..." : "Fetch before"}
       </button>
       <div
-        className="overflow-y-auto flex-grow bg-red-500"
+        className="overflow-y-auto flex-grow"
         ref={inputCommitmentContainerRef}
       >
         <div ref={topRef} />
-        {inputCommitments.map((commitment, index) => {
+        {inputCommitments.map((commitment) => {
           return (
             <div
               key={commitment.txHash}
-              className={`break-all ${LIST_ITEM_CLASS} h-36 bg-blue-500`}
+              className={`break-all ${LIST_ITEM_CLASS} h-36`}
             >
               block: {commitment.blockNumber?.toString()}; commitment:{" "}
               {commitment.inputCommitment}; from: {commitment.txFrom}; to:{" "}
