@@ -12,3 +12,5 @@ export const txInputs = pgTable("tx_inputs", {
   txTo: asAddress("tx_to").notNull(),
   txInput: asHex("tx_input").notNull(),
 });
+
+// TODO: add schema for challenges table
