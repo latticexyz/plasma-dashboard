@@ -5,7 +5,8 @@
       "name": "chain",
       "chain_id": 888,
       "url": "https://l1.quarry.linfra.xyz/",
-      "start": 311503
+      "start": 502037,
+      "batch_size": 100
     }
   ],
   "integrations": [
@@ -13,7 +14,7 @@
       "name": "txinputs",
       "enabled": true,
       "backfill": true,
-      "sources": [{ "name": "chain", "start": 311503 }],
+      "sources": [{ "name": "chain", "start": 502037 }],
       "table": {
         "name": "tx_inputs",
         "columns": [
@@ -50,7 +51,7 @@
       "name": "status",
       "enabled": true,
       "backfill": true,
-      "sources": [{ "name": "chain", "start": 311503 }],
+      "sources": [{ "name": "chain", "start": 502037 }],
       "table": {
         "name": "challenge_status",
         "columns": [
