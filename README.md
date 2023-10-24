@@ -14,7 +14,7 @@ pnpm dev
 
 ```
 DATABASE_URL=postgres:///e2pg
-NEXT_PUBLIC_RPC_URL=https://l1.quarry.linfra.xyz/
+NEXT_PUBLIC_RPC_URL=https://l1.quarry.linfra.xyz
 BATCHER_INBOX=0xff00000000000000000000000000000000000892
 BATCHER=0xe7774cef7d9775da467f9e9ffef7681d4d3ad59d
 ```
