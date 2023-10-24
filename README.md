@@ -1,36 +1,53 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
-
-## Getting Started
-
-First, run the development server:
+### Running e2pg
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+export DATABASE_URL=postgres:///e2pg && ./e2pg -config config.json
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Running the frontend
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```
+pnpm dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+### Example .env
 
-## Learn More
+```
+DATABASE_URL=postgres:///e2pg
+NEXT_PUBLIC_RPC_URL=https://l1.quarry.linfra.xyz/
+BATCHER_INBOX=0xff00000000000000000000000000000000000892
+BATCHER=0xe7774cef7d9775da467f9e9ffef7681d4d3ad59d
+```
 
-To learn more about Next.js, take a look at the following resources:
+### Challenging a commitment
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. clone quarry repo
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+```
+git clone git@github.com:latticexyz/quarry.git
+cd quarry/contracts
+```
 
-## Deploy on Vercel
+2. find current block number (can only challenge in the challenge window)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```
+cast block-number --rpc-url https://l1.quarry.linfra.xyz/
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+3. Update the .env file in `quarry/contracts`
+
+```
+RAW_PRIVATE_KEY=0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
+CHALLENGE_CONTRACT=0xfd6d23ee2b6b136e34572fc80cbcd33e9787705e
+CHALLENGE_HASH=0x9f3cd3a6ae98bb675f9f98ec3a3ca972c99292d3304da27d4cad2279fe29f224
+CHALLENGE_PRE_IMAGE=0x00000000000000000000000000000000000000000000000000000000000000067175617272790000000000000000000000000000000000000000000000000000
+RPC_URL=https://l1.quarry.linfra.xyz/
+
+CHALLENGE_BLOCK=<current block number>
+```
+
+4. Execute the challenge
+
+```
+make challenge
+```
