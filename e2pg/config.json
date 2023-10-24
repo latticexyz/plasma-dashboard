@@ -1,12 +1,108 @@
-[
+{
+  "pg_url": "$DATABASE_URL",
+  "eth_sources": [
     {
-        "name": "quarry",
-        "id": 2,
-        "chain": 900,
-        "concurrency": 1,
-        "batch": 100,
-        "eth": "https://quarry-l1.linfra.xyz/",
-        "pg": "postgres:///e2pg",
-        "integrations": ["txinputs"]
+      "name": "chain",
+      "chain_id": 888,
+      "url": "https://l1.quarry.linfra.xyz/",
+      "start": 311503
     }
-]
+  ],
+  "integrations": [
+    {
+      "name": "txinputs",
+      "enabled": true,
+      "backfill": true,
+      "sources": [{ "name": "chain", "start": 311503 }],
+      "table": {
+        "name": "tx_inputs",
+        "columns": [
+          { "name": "chain_id", "type": "numeric" },
+          { "name": "block_hash", "type": "bytea" },
+          { "name": "block_num", "type": "numeric" },
+          { "name": "tx_hash", "type": "bytea" },
+          { "name": "tx_idx", "type": "numeric" },
+          { "name": "tx_signer", "type": "bytea" },
+          { "name": "tx_to", "type": "bytea" },
+          { "name": "tx_input", "type": "bytea" }
+        ]
+      },
+      "block": [
+        { "name": "chain_id", "column": "chain_id" },
+        { "name": "block_hash", "column": "block_hash" },
+        { "name": "block_num", "column": "block_num" },
+        { "name": "tx_hash", "column": "tx_hash" },
+        { "name": "tx_idx", "column": "tx_idx" },
+        {
+          "name": "tx_signer",
+          "column": "tx_signer",
+          "filter_op": "contains",
+          "filter_arg": ["e7774cef7d9775da467f9e9ffef7681d4d3ad59d"]
+        },
+        {
+          "name": "tx_to",
+          "column": "tx_to"
+        },
+        { "name": "tx_input", "column": "tx_input" }
+      ]
+    },
+    {
+      "name": "status",
+      "enabled": true,
+      "backfill": true,
+      "sources": [{ "name": "chain", "start": 311503 }],
+      "table": {
+        "name": "challenge_status",
+        "columns": [
+          { "name": "chain_id", "type": "numeric" },
+          { "name": "author", "type": "bytea" },
+          { "name": "hash", "type": "bytea" },
+          { "name": "change_block_num", "type": "numeric" },
+          { "name": "status", "type": "numeric" },
+          { "name": "block_hash", "type": "bytea" },
+          { "name": "block_num", "type": "numeric" },
+          { "name": "tx_hash", "type": "bytea" },
+          { "name": "log_addr", "type": "bytea" }
+        ]
+      },
+      "block": [
+        { "name": "chain_id", "column": "chain_id" },
+        { "name": "block_hash", "column": "block_hash" },
+        { "name": "block_num", "column": "block_num" },
+        { "name": "tx_hash", "column": "tx_hash" },
+        { "name": "log_addr", "column": "log_addr" }
+      ],
+      "event": {
+        "name": "ChallengeStatusChanged",
+        "type": "event",
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "name": "author",
+            "type": "address",
+            "column": "author"
+          },
+          {
+            "indexed": false,
+            "name": "hash",
+            "type": "bytes32",
+            "column": "hash"
+          },
+          {
+            "indexed": false,
+            "name": "blockNumber",
+            "type": "uint256",
+            "column": "change_block_num"
+          },
+          {
+            "indexed": false,
+            "name": "status",
+            "type": "uint8",
+            "column": "status"
+          }
+        ]
+      }
+    }
+  ]
+}
