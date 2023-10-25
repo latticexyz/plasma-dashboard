@@ -4,7 +4,11 @@ import { gte, lte, and, eq } from "drizzle-orm";
 import { database } from "./database";
 import { txInputs } from "./schema";
 import { Address, Hex } from "viem";
-import { env } from "../env";
+
+const BATCHER = process.env.BATCHER as Address;
+const BATCHER_INBOX = process.env.BATCHER_INBOX as Address;
+if (!BATCHER || !BATCHER_INBOX)
+  throw new Error("Missing BATCHER or BATCHER_INBOX env variable");
 
 export type GetInputCommitmentsOptions = {
   from: bigint;
@@ -36,8 +40,8 @@ export async function getInputCommitments({
       and(
         gte(txInputs.blockNumber, from),
         lte(txInputs.blockNumber, to),
-        eq(txInputs.txSigner, env.BATCHER),
-        eq(txInputs.txTo, env.BATCHER_INBOX)
+        eq(txInputs.txSigner, BATCHER),
+        eq(txInputs.txTo, BATCHER_INBOX)
       )
     )
     .execute();
