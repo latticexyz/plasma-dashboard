@@ -1,22 +1,16 @@
-import { getBlockNumber } from "viem/actions";
-import Commitments from "./commitments";
-import { client } from "./client";
-import { bigIntMax } from "@latticexyz/common/utils";
-import { getInputCommitments } from "./getInputCommitments";
-import { INPUT_COMMITMENT_FETCH_RANGE } from "./constants";
-
-export const dynamic = "force-dynamic";
+import { getLatestCommitment } from "./getLatestCommitment";
+import { Commitment } from "./Commitment";
 
 export default async function Home() {
-  const latestBlockNumber = await getBlockNumber(client);
-  const inputCommitments = await getInputCommitments({
-    from: bigIntMax(latestBlockNumber - INPUT_COMMITMENT_FETCH_RANGE, 0n),
-    to: bigIntMax(latestBlockNumber, 0n),
-  });
+  const latestCommitment = await getLatestCommitment();
+  if (!latestCommitment)
+    throw new Error(
+      "No commitments found. Are we connected to the right chain?"
+    );
 
   return (
-    <div className="flex h-screen">
-      <Commitments initialInputCommitments={inputCommitments} />
+    <div className="flex flex-col mx-auto max-w-screen-lg">
+      <Commitment commitment={latestCommitment} />
     </div>
   );
 }
