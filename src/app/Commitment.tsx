@@ -1,5 +1,6 @@
 import { BlockIcon } from "@/icons/BlockIcon";
-import { InputCommitment, getChallengeStatus } from "@/common";
+import { InputCommitment } from "@/common";
+import { getChallengeStatus } from "@/getChallengeStatus";
 import { SendIcon } from "@/icons/SendIcon";
 import { InboxIcon } from "@/icons/InboxIcon";
 import { TruncatedAddress } from "./TruncatedAddress";

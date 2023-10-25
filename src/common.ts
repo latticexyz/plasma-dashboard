@@ -1,4 +1,4 @@
-import { Hex, Address } from "viem";
+import { Hex, Address, isHex } from "viem";
 
 export type InputCommitment = {
   blockNumber: bigint;
@@ -18,25 +18,23 @@ export enum ChallengeStatus {
   Unknown = "unknown",
 }
 
-export function getChallengeStatus(
-  commitment: InputCommitment
-): ChallengeStatus {
-  if (commitment.challenge == null) {
-    return ChallengeStatus.Unchallenged;
-  }
-  // https://github.com/latticexyz/quarry/blob/a7ede59824b7d258ebdd3df4607f51a642d43c4c/contracts/src/DataAvailabilityChallenge.sol#L5-L10
-  switch (commitment.challenge.status) {
-    case 0: // Uninitialized
-      return ChallengeStatus.Unchallenged;
-    case 1: // Active
-      return ChallengeStatus.Challenged;
-    case 2: // Resolved
-      return ChallengeStatus.Resolved;
-    case 3: // Expired
-      return ChallengeStatus.Expired;
-  }
-  // TODO: Expiring status (needs data about current block and challenge window)
-
-  // TODO: should we return `unknown` type instead of this?
-  return ChallengeStatus.Unknown;
+if (!isHex(process.env.NEXT_PUBLIC_BATCHER, { strict: true })) {
+  throw new Error(
+    "Missing or invalid NEXT_PUBLIC_BATCHER environment variable"
+  );
 }
+export const batcher = process.env.NEXT_PUBLIC_BATCHER;
+
+if (!isHex(process.env.NEXT_PUBLIC_BATCHER_INBOX, { strict: true })) {
+  throw new Error(
+    "Missing or invalid NEXT_PUBLIC_BATCHER_INBOX environment variable"
+  );
+}
+export const batcherInbox = process.env.NEXT_PUBLIC_BATCHER_INBOX;
+
+if (!isHex(process.env.NEXT_PUBLIC_CHALLENGE_CONTRACT, { strict: true })) {
+  throw new Error(
+    "Missing or invalid NEXT_PUBLIC_CHALLENGE_CONTRACT environment variable"
+  );
+}
+export const challengeContract = process.env.NEXT_PUBLIC_CHALLENGE_CONTRACT;
