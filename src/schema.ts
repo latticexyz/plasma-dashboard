@@ -34,19 +34,21 @@ export const challenges = pgTable("challenge_status", {
   status: asNumber("status", "numeric").notNull(),
 });
 
-// TODO: this should grab the relationship based on latest block number (there may be more than one challenge status)
-//       or change to an array of many challenges
-export const inputChallenges = relations(inputCommitments, ({ one }) => ({
-  challenge: one(challenges, {
+export const challengeInputCommitment = relations(challenges, ({ one }) => ({
+  inputCommitment: one(inputCommitments, {
     fields: [
-      inputCommitments.chainId,
-      inputCommitments.blockNumber,
-      inputCommitments.inputHash,
-    ],
-    references: [
       challenges.chainId,
       challenges.challengedBlockNumber,
       challenges.challengedHash,
     ],
+    references: [
+      inputCommitments.chainId,
+      inputCommitments.blockNumber,
+      inputCommitments.inputHash,
+    ],
   }),
+}));
+
+export const inputChallenges = relations(inputCommitments, ({ many }) => ({
+  challenges: many(challenges),
 }));

@@ -3,10 +3,8 @@
 import { InputCommitment, batcher, batcherInbox } from "@/common";
 import { database } from "@/database";
 
-export async function getLatestCommitments(): Promise<
-  InputCommitment[] | undefined
-> {
-  const commitments = await database.query.inputCommitments.findMany({
+export async function getLatestCommitments(): Promise<InputCommitment[]> {
+  return await database.query.inputCommitments.findMany({
     columns: {
       blockNumber: true,
       blockTimestamp: true,
@@ -16,13 +14,15 @@ export async function getLatestCommitments(): Promise<
       txFrom: true,
     },
     with: {
-      challenge: {
+      challenges: {
         columns: {
           blockNumber: true,
           blockTimestamp: true,
           txFrom: true,
           status: true,
         },
+        // TODO: probably also want to sort by log index
+        orderBy: (challenge, { desc }) => [desc(challenge.blockNumber)],
       },
     },
     where: (table, { and, eq }) =>
@@ -31,7 +31,4 @@ export async function getLatestCommitments(): Promise<
     // TODO: figure out pagination when it becomes a problem
     limit: 100,
   });
-  // `commitment.challenge` type is not nullable but should be, see https://github.com/drizzle-team/drizzle-orm/issues/1420
-  // instead, we return this as `InputCommitment` type which corrects for this.
-  return commitments;
 }

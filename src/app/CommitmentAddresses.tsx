@@ -7,7 +7,7 @@ type Props = {
   commitment: InputCommitment;
 };
 
-export async function CommitmentAddresses({ commitment }: Props) {
+export function CommitmentAddresses({ commitment }: Props) {
   return (
     <div className="flex flex-col justify-center gap-2">
       <div className="flex gap-2">

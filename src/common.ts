@@ -1,5 +1,12 @@
 import { Hex, Address, isHex } from "viem";
 
+export type Challenge = {
+  blockNumber: bigint;
+  blockTimestamp: number;
+  txFrom: Address;
+  status: number;
+};
+
 export type InputCommitment = {
   blockNumber: bigint;
   blockTimestamp: number;
@@ -7,12 +14,7 @@ export type InputCommitment = {
   txFrom: Address;
   txTo: Address;
   inputHash: Hex;
-  challenge: {
-    blockNumber: bigint;
-    blockTimestamp: number;
-    txFrom: Address;
-    status: number;
-  } | null;
+  challenges: Challenge[];
 };
 
 export enum ChallengeStatus {
