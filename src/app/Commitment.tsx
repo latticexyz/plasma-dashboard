@@ -1,74 +1,44 @@
-import { BlockIcon } from "@/icons/BlockIcon";
 import { InputCommitment } from "@/common";
 import { getChallengeStatus } from "@/getChallengeStatus";
-import { SendIcon } from "@/icons/SendIcon";
-import { InboxIcon } from "@/icons/InboxIcon";
-import { TruncatedAddress } from "./TruncatedAddress";
 import { ArrowRightIcon } from "@/icons/ArrowRightIcon";
 import { TerminalIcon } from "@/icons/TerminalIcon";
 import { ChallengeStatusIcon } from "./ChallengeStatusIcon";
 import { ChallengeStatusLabel } from "./ChallengeStatusLabel";
+import { getChallengeConfig } from "@/getChallengeConfig";
+import { client } from "@/viemClient";
+import { CommitmentBlock } from "./CommitmentBlock";
+import { CommitmentAddresses } from "./CommitmentAddresses";
+import { LabeledCell } from "./LabeledCell";
+import { ChallengeCells } from "./ChallengeCells";
+import { getBlockNumber } from "viem/actions";
 
 type Props = {
   commitment: InputCommitment;
 };
 
-export function Commitment({ commitment }: Props) {
-  const status = getChallengeStatus(commitment);
+export async function Commitment({ commitment }: Props) {
+  const [blockNumber, challengeConfig] = await Promise.all([
+    getBlockNumber(client),
+    getChallengeConfig(client),
+  ]);
+  const status = getChallengeStatus(commitment, challengeConfig, blockNumber);
   return (
-    <div className="grid grid-cols-6 px-3 py-2 gap-4">
-      <div className="flex items-center px-3 py-2 gap-3 bg-white/10">
-        <div className="flex-shrink-0 text-2xl">
-          <BlockIcon />
-        </div>
-        <div className="flex-grow flex flex-col items-end">
-          <div className="flex-grow text-white text-lg leading-6 font-mono">
-            {commitment.blockNumber.toString()}
-          </div>
-          <div className="text-xs leading-6 font-mono">00/00 00:00</div>
-        </div>
-      </div>
-      <div className="flex flex-col justify-center">
-        <div className="text-xs leading-6 font-mono uppercase">Status</div>
-        <div className="flex items-center gap-1.5">
-          <div className="font-mono">
-            <ChallengeStatusIcon status={status} />
-          </div>
-          <div className="font-mono uppercase text-white">
+    <div className="grid grid-cols-6 gap-5 p-3">
+      <CommitmentBlock commitment={commitment} />
+      <LabeledCell label="Status">
+        <div className="flex items-center gap-2">
+          <ChallengeStatusIcon status={status} />
+          <span className="text-white">
             <ChallengeStatusLabel status={status} />
-          </div>
+          </span>
         </div>
-      </div>
-      <div className="flex flex-col justify-center">
-        <div className="text-xs leading-6 font-mono uppercase">
-          Challenge window
-        </div>
-        <div className="font-mono uppercase">
-          <span className="text-white">42</span> blocks
-        </div>
-      </div>
-      <div className="flex flex-col justify-center">
-        <div className="text-xs leading-6 font-mono uppercase">Ends (est.)</div>
-        <div className="font-mono uppercase text-white">00/00 00:00</div>
-      </div>
-      <div className="flex flex-col justify-center gap-2">
-        <div className="flex gap-2">
-          <div className="flex-shrink-0">
-            <SendIcon />
-          </div>
-          <div className="font-mono uppercase text-xs text-white">
-            <TruncatedAddress address={commitment.txFrom} />
-          </div>
-        </div>
-        <div className="flex gap-2">
-          <div className="flex-shrink-0">
-            <InboxIcon />
-          </div>
-          <div className="font-mono uppercase text-xs text-white">
-            <TruncatedAddress address={commitment.txTo} />
-          </div>
-        </div>
-      </div>
+      </LabeledCell>
+      <ChallengeCells
+        latestBlockNumber={blockNumber}
+        commitment={commitment}
+        challengeConfig={challengeConfig}
+      />
+      <CommitmentAddresses commitment={commitment} />
       <div className="flex items-center">
         <div className="flex-grow flex gap-2">
           <button
@@ -86,9 +56,6 @@ export function Commitment({ commitment }: Props) {
           </button>
         </div>
       </div>
-      {/* block: {commitment.blockNumber?.toString()}; commitment:{" "}
-      {commitment.inputCommitment}; from: {commitment.txFrom}; to:{" "}
-      {commitment.txTo} */}
     </div>
   );
 }

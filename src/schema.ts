@@ -13,6 +13,7 @@ export const inputCommitments = pgTable("tx_inputs", {
   chainId: asNumber("chain_id", "numeric").notNull(),
   blockHash: asHex("block_hash").notNull(),
   blockNumber: asBigInt("block_num", "numeric").notNull(),
+  blockTimestamp: asNumber("block_time", "numeric").notNull(),
   txHash: asHex("tx_hash").notNull(),
   txIndex: asBigInt("tx_idx", "numeric").notNull(),
   txFrom: asAddress("tx_signer").notNull(),
@@ -24,13 +25,17 @@ export const challenges = pgTable("challenge_status", {
   chainId: asNumber("chain_id", "numeric").notNull(),
   blockHash: asHex("block_hash").notNull(),
   blockNumber: asBigInt("block_num", "numeric").notNull(),
+  blockTimestamp: asNumber("block_time", "numeric").notNull(),
   txHash: asHex("tx_hash").notNull(),
+  txFrom: asAddress("tx_signer").notNull(),
   logAddress: asAddress("log_addr").notNull(),
   challengedHash: asHex("challenged_hash").notNull(),
   challengedBlockNumber: asBigInt("challenged_block_num", "numeric").notNull(),
   status: asNumber("status", "numeric").notNull(),
 });
 
+// TODO: this should grab the relationship based on latest block number (there may be more than one challenge status)
+//       or change to an array of many challenges
 export const inputChallenges = relations(inputCommitments, ({ one }) => ({
   challenge: one(challenges, {
     fields: [

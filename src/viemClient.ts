@@ -6,5 +6,5 @@ if (!NEXT_PUBLIC_RPC_URL)
 
 export const client = createClient({
   transport: http(NEXT_PUBLIC_RPC_URL),
-  pollingInterval: 4000,
+  pollingInterval: 2000,
 });

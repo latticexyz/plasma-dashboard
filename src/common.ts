@@ -2,11 +2,17 @@ import { Hex, Address, isHex } from "viem";
 
 export type InputCommitment = {
   blockNumber: bigint;
+  blockTimestamp: number;
   txHash: Hex;
   txFrom: Address;
   txTo: Address;
   inputHash: Hex;
-  challenge: { status: number } | null;
+  challenge: {
+    blockNumber: bigint;
+    blockTimestamp: number;
+    txFrom: Address;
+    status: number;
+  } | null;
 };
 
 export enum ChallengeStatus {
@@ -17,6 +23,9 @@ export enum ChallengeStatus {
   Expired = "expired",
   Unknown = "unknown",
 }
+
+// TODO: is hardcoding this enough of an estimate for challenge windows?
+export const secondsPerBlock = 12;
 
 if (!isHex(process.env.NEXT_PUBLIC_BATCHER, { strict: true })) {
   throw new Error(
@@ -37,4 +46,4 @@ if (!isHex(process.env.NEXT_PUBLIC_CHALLENGE_CONTRACT, { strict: true })) {
     "Missing or invalid NEXT_PUBLIC_CHALLENGE_CONTRACT environment variable"
   );
 }
-export const challengeContract = process.env.NEXT_PUBLIC_CHALLENGE_CONTRACT;
+export const challengeContract = process.env.NEXT_PUBLIC_CHALLENGE_CONTRACT; // TODO: is a hardcoded seconds per block a good enough estimate?

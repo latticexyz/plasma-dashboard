@@ -9,6 +9,7 @@ export async function getLatestCommitments(): Promise<
   const commitments = await database.query.inputCommitments.findMany({
     columns: {
       blockNumber: true,
+      blockTimestamp: true,
       inputHash: true,
       txHash: true,
       txTo: true,
@@ -17,6 +18,9 @@ export async function getLatestCommitments(): Promise<
     with: {
       challenge: {
         columns: {
+          blockNumber: true,
+          blockTimestamp: true,
+          txFrom: true,
           status: true,
         },
       },
@@ -25,7 +29,7 @@ export async function getLatestCommitments(): Promise<
       and(eq(table.txFrom, batcher), eq(table.txTo, batcherInbox)),
     orderBy: (table, { desc }) => [desc(table.blockNumber)],
     // TODO: figure out pagination when it becomes a problem
-    limit: 500,
+    limit: 100,
   });
   // `commitment.challenge` type is not nullable but should be, see https://github.com/drizzle-team/drizzle-orm/issues/1420
   // instead, we return this as `InputCommitment` type which corrects for this.

@@ -1,4 +1,4 @@
-import { getLatestCommitments } from "./getLatestCommitments";
+import { getLatestCommitments } from "@/getLatestCommitments";
 import { Commitment } from "./Commitment";
 
 export default async function Home() {
@@ -9,10 +9,12 @@ export default async function Home() {
     );
 
   return (
-    <div className="flex flex-col mx-auto max-w-screen-lg">
-      {commitments.map((commitment) => (
-        <Commitment key={commitment.txHash} commitment={commitment} />
-      ))}
+    <div className="flex flex-col mx-auto max-w-screen-lg py-16">
+      <div className="border-y border-white/20 divide-y divide-white/20">
+        {commitments.map((commitment) => (
+          <Commitment key={commitment.txHash} commitment={commitment} />
+        ))}
+      </div>
     </div>
   );
 }
