@@ -20,6 +20,7 @@
           { "name": "chain_id", "type": "numeric" },
           { "name": "block_hash", "type": "bytea" },
           { "name": "block_num", "type": "numeric" },
+          { "name": "block_time", "type": "numeric" },
           { "name": "tx_hash", "type": "bytea" },
           { "name": "tx_idx", "type": "numeric" },
           { "name": "tx_signer", "type": "bytea" },
@@ -31,6 +32,7 @@
         { "name": "chain_id", "column": "chain_id" },
         { "name": "block_hash", "column": "block_hash" },
         { "name": "block_num", "column": "block_num" },
+        { "name": "block_time", "column": "block_time" },
         { "name": "tx_hash", "column": "tx_hash" },
         { "name": "tx_idx", "column": "tx_idx" },
         {
@@ -57,7 +59,9 @@
           { "name": "chain_id", "type": "numeric" },
           { "name": "block_hash", "type": "bytea" },
           { "name": "block_num", "type": "numeric" },
+          { "name": "block_time", "type": "numeric" },
           { "name": "tx_hash", "type": "bytea" },
+          { "name": "tx_signer", "type": "bytea" },
           { "name": "log_addr", "type": "bytea" },
           { "name": "challenged_hash", "type": "bytea" },
           { "name": "challenged_block_num", "type": "numeric" },
@@ -68,7 +72,9 @@
         { "name": "chain_id", "column": "chain_id" },
         { "name": "block_hash", "column": "block_hash" },
         { "name": "block_num", "column": "block_num" },
+        { "name": "block_time", "column": "block_time" },
         { "name": "tx_hash", "column": "tx_hash" },
+        { "name": "tx_signer", "column": "tx_signer" },
         { "name": "log_addr", "column": "log_addr" }
       ],
       "event": {
