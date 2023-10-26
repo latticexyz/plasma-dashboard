@@ -1,11 +1,6 @@
 import { pgTable } from "drizzle-orm/pg-core";
-import {
-  asBigInt,
-  asHex,
-  asAddress,
-  asNumber,
-} from "@latticexyz/store-sync/postgres";
 import { relations } from "drizzle-orm";
+import { asNumber, asHex, asBigInt, asAddress } from "./columnTypes";
 
 // TODO: make integration table columns actually not null, or remove `notNull()` usage here
 
