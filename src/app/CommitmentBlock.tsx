@@ -8,7 +8,7 @@ type Props = {
 
 export function CommitmentBlock({ commitment }: Props) {
   return (
-    <div className="flex items-center px-3 py-2 gap-3 bg-white/10">
+    <div className="flex items-center gap-3">
       <div className="flex-shrink-0 text-2xl">
         <BlockIcon />
       </div>

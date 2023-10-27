@@ -34,6 +34,7 @@ export async function getLatestCommitments(
         columns: {
           blockNumber: true,
           blockTimestamp: true,
+          txHash: true,
           txFrom: true,
           status: true,
         },
