@@ -1,6 +1,11 @@
 "use client";
 
-import { ChallengeStatus, InputCommitment, secondsPerBlock } from "@/common";
+import {
+  Challenge,
+  ChallengeStatus,
+  InputCommitment,
+  secondsPerBlock,
+} from "@/common";
 import { ChallengeConfig } from "@/getChallengeConfig";
 import { useLatestBlockNumber } from "@/useLatestBlockNumber";
 import { LabeledCell } from "./LabeledCell";

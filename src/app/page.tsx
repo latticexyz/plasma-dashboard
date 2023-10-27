@@ -39,7 +39,7 @@ export default async function HomePage({ searchParams }: Props) {
   ]);
 
   return (
-    <div className="flex flex-col mx-auto max-w-screen-lg py-16 gap-10">
+    <div className="flex flex-col gap-10">
       <div className="flex items-end justify-between">
         <div className="space-y-1">
           <h1 className="font-mono text-xl text-white uppercase">

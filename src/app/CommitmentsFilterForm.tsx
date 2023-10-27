@@ -8,7 +8,7 @@ type Props = {
 
 export function CommitmentsFilterForm({ latestBlockNumber }: Props) {
   return (
-    <form method="get" className="flex items-center justify-between gap-4">
+    <form method="GET" className="flex items-center justify-between gap-4">
       <div className="flex items-center justify-between gap-2">
         <label className="flex flex-col gap-1">
           <span className="font-mono text-xs uppercase">From block</span>

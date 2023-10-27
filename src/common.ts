@@ -3,6 +3,7 @@ import { Hex, Address, isHex } from "viem";
 export type Challenge = {
   blockNumber: bigint;
   blockTimestamp: number;
+  txHash: Hex;
   txFrom: Address;
   status: number;
 };

@@ -10,7 +10,7 @@ type Props = {
 export function CommitmentAddresses({ commitment }: Props) {
   return (
     <div className="flex flex-col justify-center gap-2">
-      <div className="flex gap-2">
+      <div className="flex gap-2 items-center">
         <div className="flex-shrink-0">
           <SendIcon />
         </div>
@@ -18,7 +18,7 @@ export function CommitmentAddresses({ commitment }: Props) {
           <TruncatedAddress address={commitment.txFrom} />
         </div>
       </div>
-      <div className="flex gap-2">
+      <div className="flex gap-2 items-center">
         <div className="flex-shrink-0">
           <InboxIcon />
         </div>

@@ -1,7 +1,6 @@
 import { ChallengeStatus } from "@/common";
-import { ChallengeStatusIcon } from "./ChallengeStatusIcon";
-import { ChallengeStatusLabel } from "./ChallengeStatusLabel";
 import { LabeledCell } from "./LabeledCell";
+import { ChallengeStatusIndicator } from "./ChallengeStatusIndicator";
 
 type Props = {
   status: ChallengeStatus;
@@ -10,12 +9,7 @@ type Props = {
 export function ChallengeStatusCell({ status }: Props) {
   return (
     <LabeledCell label="Status">
-      <div className="flex items-center gap-2">
-        <ChallengeStatusIcon status={status} />
-        <span className="text-white">
-          <ChallengeStatusLabel status={status} />
-        </span>
-      </div>
+      <ChallengeStatusIndicator status={status} />
     </LabeledCell>
   );
 }
