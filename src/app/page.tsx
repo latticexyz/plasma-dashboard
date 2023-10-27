@@ -7,9 +7,9 @@ import { getBlockNumber } from "viem/actions";
 import { client } from "@/viemClient";
 import { getChallengeConfig } from "@/getChallengeConfig";
 import { CommitmentsFilterForm } from "./CommitmentsFilterForm";
-import { ChallengeStatus } from "@/common";
-import { Address } from "viem";
-import { useMemo } from "react";
+
+// Force Next.js to always re-render this, otherwise it will cache the fetch for the latest block number, making it quickly stale and affecting the defaults set up deeper in the component tree.
+export const dynamic = "force-dynamic";
 
 type Props = {
   // TODO: figure out if Next provides this type for us
@@ -34,7 +34,7 @@ export default async function HomePage({ searchParams }: Props) {
   // TODO: figure out how we want to poll for new commitments and how to bring in the new ones
   const [commitments, latestBlockNumber, challengeConfig] = await Promise.all([
     getLatestCommitments(filter),
-    getBlockNumber(client),
+    getBlockNumber(client, { cacheTime: 0 }),
     getChallengeConfig(client),
   ]);
 
