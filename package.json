@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@latticexyz/common": "^2.0.0-main-08d7c471",
+    "@radix-ui/react-dialog": "^1.0.5",
     "dotenv": "^16.3.1",
     "drizzle-orm": "^0.28.6",
     "next": "13.5.4",
