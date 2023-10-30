@@ -1,5 +1,6 @@
 import { InputCommitment, ChallengeStatus } from "@/common";
 import { TerminalIcon } from "@/icons/TerminalIcon";
+import { DialogButton } from "./DialogButton";
 
 type Props = {
   commitment: InputCommitment;
@@ -9,40 +10,49 @@ type Props = {
 export function ChallengeButton({ commitment, status }: Props) {
   if (status === ChallengeStatus.Unchallenged) {
     return (
-      <button
-        type="button"
-        className="flex-grow flex items-center px-3 py-2 gap-2 bg-white text-black"
-        onClick={() => alert("not implemented yet")}
+      <DialogButton
+        className="flex-grow"
+        label={
+          <>
+            <TerminalIcon />
+            <span className="font-mono uppercase text-xs">Challenge</span>
+          </>
+        }
       >
-        <TerminalIcon />
-        <span className="font-mono uppercase text-xs">Challenge</span>
-      </button>
+        TODO
+      </DialogButton>
     );
   }
 
   if (status === ChallengeStatus.Challenged) {
     return (
-      <button
-        type="button"
-        className="flex-grow flex items-center px-3 py-2 gap-2 bg-white text-black"
-        onClick={() => alert("not implemented yet")}
+      <DialogButton
+        className="flex-grow"
+        label={
+          <>
+            <TerminalIcon />
+            <span className="font-mono uppercase text-xs">Resolve</span>
+          </>
+        }
       >
-        <TerminalIcon />
-        <span className="font-mono uppercase text-xs">Resolve</span>
-      </button>
+        TODO
+      </DialogButton>
     );
   }
 
   if (status === ChallengeStatus.Expiring) {
     return (
-      <button
-        type="button"
-        className="flex-grow flex items-center px-3 py-2 gap-2 bg-white text-black"
-        onClick={() => alert("not implemented yet")}
+      <DialogButton
+        className="flex-grow"
+        label={
+          <>
+            <TerminalIcon />
+            <span className="font-mono uppercase text-xs">Expire</span>
+          </>
+        }
       >
-        <TerminalIcon />
-        <span className="font-mono uppercase text-xs">Expire</span>
-      </button>
+        TODO
+      </DialogButton>
     );
   }
 
