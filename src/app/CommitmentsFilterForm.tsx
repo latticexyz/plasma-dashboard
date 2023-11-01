@@ -1,4 +1,9 @@
+"use client";
+
 import { batcher } from "@/common";
+import { FilterForm } from "./FilterForm";
+import { FilterInput } from "./FilterInput";
+import { FilterSelect } from "./FilterSelect";
 
 type Props = {
   latestBlockNumber: bigint;
@@ -8,11 +13,11 @@ type Props = {
 
 export function CommitmentsFilterForm({ latestBlockNumber }: Props) {
   return (
-    <form method="GET" className="flex items-center justify-between gap-4">
+    <FilterForm className="flex items-center justify-between gap-4">
       <div className="flex items-center justify-between gap-2">
         <label className="flex flex-col gap-1">
           <span className="font-mono text-xs uppercase">From block</span>
-          <input
+          <FilterInput
             name="fromBlock"
             type="text"
             className="bg-white/10 border border-white/20 text-white placeholder:text-white/30 font-mono px-3 py-2 w-32"
@@ -21,7 +26,7 @@ export function CommitmentsFilterForm({ latestBlockNumber }: Props) {
         </label>
         <label className="flex flex-col gap-1">
           <span className="font-mono text-xs uppercase">To block</span>
-          <input
+          <FilterInput
             name="toBlock"
             type="text"
             className="bg-white/10 border border-white/20 text-white placeholder:text-white/30 font-mono px-3 py-2 w-32"
@@ -31,7 +36,7 @@ export function CommitmentsFilterForm({ latestBlockNumber }: Props) {
       </div>
       <label className="flex flex-col gap-1">
         <span className="font-mono text-xs uppercase">Status</span>
-        <select
+        <FilterSelect
           name="status"
           className="bg-white/10 border border-white/20 text-white font-mono px-2 py-2"
         >
@@ -41,22 +46,22 @@ export function CommitmentsFilterForm({ latestBlockNumber }: Props) {
           <option>Resolved</option>
           <option>Expiring</option>
           <option>Expired</option>
-        </select>
+        </FilterSelect>
       </label>
       <div className="flex items-center justify-between gap-2">
         <label className="flex flex-col gap-1">
           <span className="font-mono text-xs uppercase">Address</span>
-          <select
+          <FilterSelect
             name="addressSource"
             className="bg-white/10 border border-white/20 text-white font-mono px-2 py-2"
           >
             <option>From</option>
             <option>To</option>
-          </select>
+          </FilterSelect>
         </label>
         <label className="flex flex-col gap-1">
           <span className="font-mono text-xs uppercase">&nbsp;</span>
-          <input
+          <FilterInput
             name="address"
             type="text"
             className="bg-white/10 border border-white/20 text-white placeholder:text-white/30 font-mono px-3 py-2 w-64"
@@ -67,6 +72,6 @@ export function CommitmentsFilterForm({ latestBlockNumber }: Props) {
       <button type="submit" className="hidden">
         Submit
       </button>
-    </form>
+    </FilterForm>
   );
 }

@@ -59,14 +59,18 @@ export default async function HomePage({ searchParams }: Props) {
       <div className="flex flex-col gap-5">
         <CommitmentsFilterForm latestBlockNumber={latestBlockNumber} />
         <div className="border-y border-white/20 divide-y divide-white/20">
-          {commitments.map((commitment) => (
-            <Commitment
-              key={commitment.txHash}
-              latestBlockNumber={latestBlockNumber}
-              challengeConfig={challengeConfig}
-              commitment={commitment}
-            />
-          ))}
+          {commitments.length ? (
+            commitments.map((commitment) => (
+              <Commitment
+                key={commitment.txHash}
+                latestBlockNumber={latestBlockNumber}
+                challengeConfig={challengeConfig}
+                commitment={commitment}
+              />
+            ))
+          ) : (
+            <div className="p-8 text-center">No input commitments found.</div>
+          )}
         </div>
       </div>
     </div>
