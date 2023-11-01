@@ -7,7 +7,6 @@ import { FilterSelect } from "./FilterSelect";
 import { ChallengeConfig } from "@/getChallengeConfig";
 import { Commitment } from "./Commitment";
 import { useEffect, useState } from "react";
-import { twMerge } from "tailwind-merge";
 import { PendingIcon } from "@/icons/PendingIcon";
 
 type Props = {
