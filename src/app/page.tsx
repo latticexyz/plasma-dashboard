@@ -6,7 +6,7 @@ import { Commitment } from "./Commitment";
 import { getBlockNumber } from "viem/actions";
 import { client } from "@/viemClient";
 import { getChallengeConfig } from "@/getChallengeConfig";
-import { CommitmentsFilterForm } from "./CommitmentsFilterForm";
+import { Commitments } from "./Commitments";
 
 // Force Next.js to always re-render this, otherwise it will cache the fetch for the latest block number, making it quickly stale and affecting the defaults set up deeper in the component tree.
 export const dynamic = "force-dynamic";
@@ -56,23 +56,11 @@ export default async function HomePage({ searchParams }: Props) {
           Learn more
         </button>
       </div>
-      <div className="flex flex-col gap-5">
-        <CommitmentsFilterForm latestBlockNumber={latestBlockNumber} />
-        <div className="border-y border-white/20 divide-y divide-white/20">
-          {commitments.length ? (
-            commitments.map((commitment) => (
-              <Commitment
-                key={commitment.txHash}
-                latestBlockNumber={latestBlockNumber}
-                challengeConfig={challengeConfig}
-                commitment={commitment}
-              />
-            ))
-          ) : (
-            <div className="p-8 text-center">No input commitments found.</div>
-          )}
-        </div>
-      </div>
+      <Commitments
+        latestBlockNumber={latestBlockNumber}
+        challengeConfig={challengeConfig}
+        commitments={commitments}
+      />
     </div>
   );
 }

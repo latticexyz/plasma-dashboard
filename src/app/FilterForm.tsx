@@ -15,9 +15,16 @@ function formToParams(form: HTMLFormElement): URLSearchParams {
 type Props = DetailedHTMLProps<
   FormHTMLAttributes<HTMLFormElement>,
   HTMLFormElement
->;
+> & {
+  inputDelay?: number;
+  onBeforeNavigate?: (to: string) => void;
+};
 
-export function FilterForm({ onSubmit, onChange, ...props }: Props) {
+export function FilterForm({
+  inputDelay = 500,
+  onBeforeNavigate,
+  ...props
+}: Props) {
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const pathname = usePathname();
   const router = useRouter();
@@ -32,8 +39,10 @@ export function FilterForm({ onSubmit, onChange, ...props }: Props) {
           timerRef.current = null;
         }
         const params = formToParams(event.currentTarget);
-        router.push(`${pathname}?${params.toString()}`);
-        onSubmit?.(event);
+        const to = `${pathname}?${params.toString()}`;
+        onBeforeNavigate?.(to);
+        router.push(to);
+        props.onSubmit?.(event);
       }}
       onChange={(event) => {
         if (timerRef.current) {
@@ -41,19 +50,22 @@ export function FilterForm({ onSubmit, onChange, ...props }: Props) {
           timerRef.current = null;
         }
         const params = formToParams(event.currentTarget);
+        const to = `${pathname}?${params.toString()}`;
         if (
           event.target instanceof HTMLElement &&
           event.target.matches(
             "select, input[type=checkbox], input[type=radio]"
           )
         ) {
-          router.replace(`${pathname}?${params.toString()}`);
+          onBeforeNavigate?.(to);
+          router.replace(to);
         } else {
+          onBeforeNavigate?.(to);
           timerRef.current = setTimeout(() => {
-            router.replace(`${pathname}?${params.toString()}`);
-          }, 1000);
+            router.replace(to);
+          }, inputDelay);
         }
-        onChange?.(event);
+        props.onChange?.(event);
       }}
     />
   );
