@@ -1,6 +1,5 @@
-import { challengeContract } from "@/common";
+import { challengeContract, challengeContractAbi } from "@/common";
 import { Client, getContract } from "viem";
-import challengeContractAbi from "@/abi/DataAvailabilityChallenge.abi.json";
 import { memoize } from "@/memoize";
 import { secondsPerBlock } from "./common";
 
