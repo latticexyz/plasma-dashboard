@@ -58,11 +58,11 @@ export function FilterForm({
           )
         ) {
           onBeforeNavigate?.(to);
-          router.replace(to);
+          router.push(to);
         } else {
           onBeforeNavigate?.(to);
           timerRef.current = setTimeout(() => {
-            router.replace(to);
+            router.push(to);
           }, inputDelay);
         }
         props.onChange?.(event);
