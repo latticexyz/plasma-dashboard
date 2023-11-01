@@ -2,18 +2,28 @@ import { ChallengeStatus, InputCommitment } from "@/common";
 import { ArrowRightIcon } from "@/icons/ArrowRightIcon";
 import { TerminalIcon } from "@/icons/TerminalIcon";
 import Link from "next/link";
-import { ChallengeButton } from "./ChallengeButton";
+import { CommitmentButton } from "./CommitmentButton";
+import { ChallengeConfig } from "@/getChallengeConfig";
 
 type Props = {
+  challengeConfig: ChallengeConfig;
   commitment: InputCommitment;
   status: ChallengeStatus;
 };
 
-export function CommitmentButtons({ commitment, status }: Props) {
+export function CommitmentButtons({
+  challengeConfig,
+  commitment,
+  status,
+}: Props) {
   return (
     <div className="flex items-center justify-end">
       <div className="flex-grow flex gap-2 justify-end">
-        <ChallengeButton commitment={commitment} status={status} />
+        <CommitmentButton
+          challengeConfig={challengeConfig}
+          commitment={commitment}
+          status={status}
+        />
         <Link
           href={`/commitments/${commitment.txHash}`}
           className="flex-shrink-0 px-3 py-2 bg-white/20 text-white"

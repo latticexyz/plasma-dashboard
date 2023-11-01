@@ -1,4 +1,7 @@
 import { Hex, Address, isHex } from "viem";
+import challengeContractAbi from "@/abi/DataAvailabilityChallenge.abi.json";
+
+export { challengeContractAbi };
 
 export type Challenge = {
   blockNumber: bigint;

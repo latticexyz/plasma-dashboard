@@ -55,7 +55,11 @@ export function CommitmentCells({
           </span>
         </LabeledCell>
         <CommitmentAddresses commitment={commitment} />
-        <CommitmentButtons commitment={commitment} status={status} />
+        <CommitmentButtons
+          challengeConfig={challengeConfig}
+          commitment={commitment}
+          status={status}
+        />
       </>
     );
   }
@@ -81,7 +85,11 @@ export function CommitmentCells({
           </span>
         </LabeledCell>
         <CommitmentAddresses commitment={commitment} />
-        <CommitmentButtons commitment={commitment} status={status} />
+        <CommitmentButtons
+          challengeConfig={challengeConfig}
+          commitment={commitment}
+          status={status}
+        />
       </>
     );
   }
@@ -101,7 +109,11 @@ export function CommitmentCells({
           </span>
         </LabeledCell>
         <CommitmentAddresses commitment={commitment} />
-        <CommitmentButtons commitment={commitment} status={status} />
+        <CommitmentButtons
+          challengeConfig={challengeConfig}
+          commitment={commitment}
+          status={status}
+        />
       </>
     );
   }
@@ -126,7 +138,11 @@ export function CommitmentCells({
           </span>
         </LabeledCell>
         <CommitmentAddresses commitment={commitment} />
-        <CommitmentButtons commitment={commitment} status={status} />
+        <CommitmentButtons
+          challengeConfig={challengeConfig}
+          commitment={commitment}
+          status={status}
+        />
       </>
     );
   }

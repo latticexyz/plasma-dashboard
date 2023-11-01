@@ -6,6 +6,7 @@ import {
 } from "@/common";
 import { redstoneDevnetL1 } from "@/chains/redstoneDevnetL1";
 import { PendingIcon } from "@/icons/PendingIcon";
+import { Hex } from "viem";
 
 type Props = {
   commitment: InputCommitment;
@@ -13,7 +14,7 @@ type Props = {
 
 // TODO: migrate to consistent button with support for pending state
 
-export function ChallengeButton({ commitment }: Props) {
+export function ExpireButton({ commitment }: Props) {
   // TODO: check for chain, offer to switch
   // TODO: attach (`bondSize` - balance) value once `challenge` method supports payable
   const {
@@ -24,7 +25,7 @@ export function ChallengeButton({ commitment }: Props) {
     chainId: redstoneDevnetL1.id,
     address: challengeContract,
     abi: challengeContractAbi,
-    functionName: "challenge",
+    functionName: "expire",
     args: [commitment.blockNumber, commitment.inputHash],
   });
   const { write, isLoading: isWriteLoading } = useContractWrite(config);
@@ -37,7 +38,7 @@ export function ChallengeButton({ commitment }: Props) {
       onClick={write}
       className="bg-black text-white p-4 disabled:opacity-50"
     >
-      {isPending ? <PendingIcon /> : <>Challenge</>}
+      {isPending ? <PendingIcon /> : <>Expire</>}
     </button>
   );
 }

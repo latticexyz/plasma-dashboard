@@ -3,11 +3,12 @@
 import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { ReactNode } from "react";
 import { configureChains, createConfig, WagmiConfig } from "wagmi";
-import { mainnet, polygon, optimism, arbitrum, base, zora } from "wagmi/chains";
 import { publicProvider } from "wagmi/providers/public";
+import { redstoneDevnetL2 } from "./chains/redstoneDevnetL2";
+import { redstoneDevnetL1 } from "./chains/redstoneDevnetL1";
 
 const { chains, publicClient } = configureChains(
-  [mainnet, polygon, optimism, arbitrum, base, zora],
+  [redstoneDevnetL2, redstoneDevnetL1],
   [publicProvider()]
 );
 
