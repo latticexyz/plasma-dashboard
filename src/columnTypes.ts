@@ -42,8 +42,11 @@ export const asHex = (name: string) =>
     toDriver(data: Hex): ByteArray {
       return hexToBytes(data);
     },
-    fromDriver(driverData: ByteArray): Hex {
-      return bytesToHex(driverData);
+    fromDriver(driverData: ByteArray | string): Hex {
+      // Sometimes drizzle returns a ByteArray or \x prefixed string. Might have something to do with joins/relationships.
+      return typeof driverData === "string"
+        ? (driverData.replace(/^\\x/, "0x") as Hex)
+        : bytesToHex(driverData);
     },
   })(name);
 
@@ -55,7 +58,12 @@ export const asAddress = (name: string) =>
     toDriver(data: Address): ByteArray {
       return hexToBytes(data);
     },
-    fromDriver(driverData: ByteArray): Address {
-      return getAddress(bytesToHex(driverData));
+    fromDriver(driverData: ByteArray | string): Address {
+      return getAddress(
+        // Sometimes drizzle returns a ByteArray or \x prefixed string. Might have something to do with joins/relationships.
+        typeof driverData === "string"
+          ? (driverData.replace(/^\\x/, "0x") as Hex)
+          : bytesToHex(driverData)
+      );
     },
   })(name);
