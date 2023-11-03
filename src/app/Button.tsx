@@ -40,13 +40,13 @@ export function Button({
         <span
           className={twMerge(
             "row-start-1 col-start-1 transition opacity-0 bg-gradient-to-r from-transparent via-white/80 to-white",
-            "group-aria-[busy=true]:opacity-100 group-hover:group-aria-[busy=true]:opacity-20"
+            "group-aria-[busy=true]:opacity-100 group-hover:group-aria-[busy=true]:translate-x-1/2"
           )}
         ></span>
         <span
           className={twMerge(
             "row-start-1 col-start-1 transition opacity-0 flex items-center justify-end",
-            "group-aria-[busy=true]:opacity-100 group-hover:group-aria-[busy=true]:opacity-20"
+            "group-aria-[busy=true]:opacity-100 group-hover:group-aria-[busy=true]:translate-x-5"
           )}
         >
           <span className="px-3 py-2">
