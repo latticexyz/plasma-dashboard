@@ -21,9 +21,9 @@ export function Button({
       aria-busy={pending}
       aria-disabled={disabled}
       className={twMerge(
-        "group bg-white text-black transition hover:bg-neutral-200",
-        "aria-[busy=true]:opacity-80 aria-[busy=true]:hover:bg-white aria-[busy=true]:cursor-default",
-        "aria-[disabled=true]:opacity-80 aria-[disabled=true]:cursor-not-allowed",
+        "group bg-white text-black transition hover:bg-lime-300",
+        "aria-[busy=true]:hover:bg-amber-200 aria-[busy=true]:cursor-default",
+        "aria-[disabled=true]:bg-neutral-400 aria-[disabled=true]:hover:bg-orange-300 aria-[disabled=true]:cursor-not-allowed",
         className
       )}
       {...props}
@@ -32,7 +32,7 @@ export function Button({
         <span
           className={twMerge(
             "row-start-1 col-start-1 transition opacity-100 flex items-center justify-center",
-            "group-aria-[busy=true]:opacity-10 group-hover:group-aria-[busy=true]:opacity-60"
+            "group-aria-[busy=true]:opacity-10 group-hover:group-aria-[busy=true]:opacity-100"
           )}
         >
           <span className="px-3 py-2">{children}</span>
