@@ -1,6 +1,6 @@
 "use client";
 
-import { PendingIcon } from "@/icons/PendingIcon";
+import { PendingIcon } from "@/ui/icons/PendingIcon";
 import { useBondBalance } from "@/useBondBalance";
 import { formatEther } from "viem";
 

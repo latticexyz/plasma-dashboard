@@ -13,6 +13,7 @@
   "dependencies": {
     "@latticexyz/common": "^2.0.0-main-08d7c471",
     "@radix-ui/react-dialog": "^1.0.5",
+    "@radix-ui/react-tooltip": "^1.0.7",
     "@rainbow-me/rainbowkit": "^1.2.0",
     "dotenv": "^16.3.1",
     "drizzle-orm": "^0.28.6",

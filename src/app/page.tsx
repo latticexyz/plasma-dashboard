@@ -2,7 +2,6 @@ import {
   CommitmentsFilter,
   getLatestCommitments,
 } from "@/getLatestCommitments";
-import { Commitment } from "./Commitment";
 import { getBlockNumber } from "viem/actions";
 import { client } from "@/viemClient";
 import { getChallengeConfig } from "@/getChallengeConfig";

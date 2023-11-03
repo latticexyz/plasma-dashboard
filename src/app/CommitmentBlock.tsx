@@ -1,6 +1,6 @@
-import { BlockIcon } from "@/icons/BlockIcon";
+import { BlockIcon } from "@/ui/icons/BlockIcon";
 import { InputCommitment } from "@/common";
-import { ShortTimestamp } from "./ShortTimestamp";
+import { ShortTimestamp } from "@/ui/ShortTimestamp";
 
 type Props = {
   commitment: InputCommitment;

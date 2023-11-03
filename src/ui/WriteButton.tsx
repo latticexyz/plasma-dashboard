@@ -1,9 +1,10 @@
 "use client";
 
-import { Abi, Address } from "viem";
+import { Abi, Address, BaseError } from "viem";
 import {
   useContractWrite,
   usePrepareContractWrite,
+  useWaitForTransaction,
   UsePrepareContractWriteConfig,
 } from "wagmi";
 import { Button } from "./Button";
@@ -31,35 +32,38 @@ export function WriteButton<
   const writeResult = useContractWrite<abi, functionName, "prepared">(
     prepareResult.config
   );
+  const transactionResult = useWaitForTransaction({
+    chainId: write.chainId,
+    ...writeResult.data,
+  });
 
   if (prepareResult.isLoading) {
-    return (
-      <Button pending>
-        <HoverLabel label={label} labelHover="Estimating gas…" />
-      </Button>
-    );
+    return <Button pending="Estimating gas…">{label}</Button>;
+  }
+
+  if (writeResult.isLoading) {
+    return <Button pending="Waiting for confirmation…">{label}</Button>;
+  }
+
+  if (transactionResult.isLoading) {
+    return <Button pending="Waiting for transaction…">{label}</Button>;
   }
 
   if (prepareResult.isError) {
     return (
-      <Button disabled>
-        <HoverLabel
-          label={label}
-          // TODO: reason from contract revert
-          labelHover={prepareResult.error?.message ?? "Could not estimate gas"}
-        />
-      </Button>
-    );
-  }
-
-  if (!writeResult.write) {
-    return (
-      <Button disabled>
-        <HoverLabel
-          label={label}
-          // TODO: better messaging
-          labelHover={writeResult.error?.message ?? "Can't call contract"}
-        />
+      <Button
+        disabled
+        error={
+          prepareResult.error instanceof Error ? (
+            <span className="flex font-mono whitespace-pre p-2 pb-8">
+              {prepareResult.error.message}
+            </span>
+          ) : (
+            "Could not estimate gas"
+          )
+        }
+      >
+        {label}
       </Button>
     );
   }
