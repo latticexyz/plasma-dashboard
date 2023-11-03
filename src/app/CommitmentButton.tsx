@@ -1,4 +1,9 @@
-import { InputCommitment, ChallengeStatus } from "@/common";
+import {
+  InputCommitment,
+  ChallengeStatus,
+  challengeContractAbi,
+  challengeContract,
+} from "@/common";
 import { TerminalIcon } from "@/icons/TerminalIcon";
 import { DialogButton } from "./DialogButton";
 import { ChallengeButton } from "./ChallengeButton";
@@ -7,6 +12,8 @@ import { DepositButton } from "./DepositButton";
 import { ChallengeConfig } from "@/getChallengeConfig";
 import { ResolveButton } from "./ResolveButton";
 import { ExpireButton } from "./ExpireButton";
+import { redstoneDevnetL1 } from "@/chains/redstoneDevnetL1";
+import { ConnectedWriteButton } from "./ConnectedWriteButton";
 
 type Props = {
   challengeConfig: ChallengeConfig;
@@ -30,6 +37,18 @@ export function CommitmentButton({
           </>
         }
       >
+        <div>
+          <ConnectedWriteButton
+            write={{
+              chainId: redstoneDevnetL1.id,
+              address: challengeContract,
+              abi: challengeContractAbi,
+              functionName: "challenge",
+              args: [commitment.blockNumber, commitment.inputHash],
+            }}
+            label="Challenge"
+          />
+        </div>
         <div>TODO: explain wtf this is for</div>
         <div>
           <ChallengeButton commitment={commitment} />
