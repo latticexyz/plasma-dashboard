@@ -1,6 +1,6 @@
 "use client";
 
-import { Abi, Address, BaseError } from "viem";
+import { Abi, Address } from "viem";
 import {
   useContractWrite,
   usePrepareContractWrite,
@@ -9,14 +9,13 @@ import {
   usePublicClient,
 } from "wagmi";
 import { Button } from "./Button";
-import { ReactNode, useCallback, useEffect } from "react";
-import { HoverLabel } from "./HoverLabel";
+import { ReactNode, useCallback } from "react";
 import { useDeepMemo } from "@/useDeepMemo";
 import { toast } from "react-toastify";
 import { useCreatePromise } from "@/useCreatePromise";
 import { wait } from "@latticexyz/common/utils";
 import { afterUnless } from "@/afterUnless";
-import { getTransaction, waitForTransactionReceipt } from "viem/actions";
+import { waitForTransactionReceipt } from "viem/actions";
 
 export type Props<
   abi extends Abi | readonly unknown[],
@@ -86,15 +85,19 @@ export function WriteButton<
   // TODO: invalidate cache or otherwise reload tx data
 
   if (prepareResult.isLoading) {
-    return <Button pending="Estimating gas…">{label}</Button>;
+    return (
+      <Button pending title="Estimating gas…">
+        {label}
+      </Button>
+    );
   }
 
   if (writeResult.isLoading) {
-    return <Button pending="Waiting for confirmation…">{label}</Button>;
+    return <Button pending>{label}</Button>;
   }
 
   if (transactionResult.isLoading) {
-    return <Button pending="Waiting for transaction…">{label}</Button>;
+    return <Button pending>{label}</Button>;
   }
 
   if (prepareResult.isError) {

@@ -7,7 +7,7 @@ type Props = DetailedHTMLProps<
   ButtonHTMLAttributes<HTMLButtonElement>,
   HTMLButtonElement
 > & {
-  pending?: boolean | ReactNode;
+  pending?: boolean;
   error?: ReactNode;
 };
 
@@ -17,6 +17,7 @@ export function Button({
   pending,
   disabled,
   error,
+  title,
   children,
   ...props
 }: Props) {
@@ -89,10 +90,10 @@ export function Button({
               <Tooltip.Arrow className="fill-red-900 mb-1.5" />
             </Tooltip.Content>
           </Tooltip.Portal>
-        ) : pending != null && pending !== true && pending !== false ? (
+        ) : title ? (
           <Tooltip.Portal>
             <Tooltip.Content className="bg-neutral-800 text-white max-w-lg max-h-40 overflow-auto text-xs px-3 py-2.5">
-              {pending}
+              {title}
               <Tooltip.Arrow className="fill-neutral-800 mb-1.5" />
             </Tooltip.Content>
           </Tooltip.Portal>
