@@ -1,6 +1,6 @@
 "use client";
 
-import { Abi, Address } from "viem";
+import { Abi, Address, Client } from "viem";
 import {
   useContractWrite,
   usePrepareContractWrite,
@@ -65,9 +65,13 @@ export function WriteButton<
         // TODO: figure out why calling `waitForTransactionReceipt` immediately results in a `TransactionReceiptNotFoundError`
         await wait(250);
 
-        const receiptPromise = waitForTransactionReceipt(publicClient, {
-          hash,
-        });
+        const receiptPromise = waitForTransactionReceipt(
+          // TODO: ugh why
+          publicClient as unknown as Client,
+          {
+            hash,
+          }
+        );
         afterUnless(wait(1000 * 15), receiptPromise, () =>
           onProgress("It can sometimes take a while to finalize a transaction…")
         );
