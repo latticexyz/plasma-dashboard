@@ -21,11 +21,11 @@ export type Props<
   abi extends Abi | readonly unknown[],
   functionName extends string
 > = {
+  label: ReactNode;
   write: UsePrepareContractWriteConfig<abi, functionName, number> & {
     chainId: number;
     address: Address;
   };
-  label: ReactNode;
 };
 
 export function WriteButton<
@@ -140,10 +140,15 @@ export function WriteButton<
             });
           },
           (error) => {
+            // TODO: improve viem error handling (can't do instanceof checks)
             toast.update(toastId, {
               isLoading: false,
               type: "error",
-              render: String(error.message),
+              render: error.shortMessage ? (
+                error.shortMessage
+              ) : (
+                <div className="whitespace-pre-wrap">{String(error)}</div>
+              ),
               autoClose: 15000,
               closeButton: true,
             });
