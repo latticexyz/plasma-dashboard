@@ -1,7 +1,7 @@
 import { InputCommitment } from "@/common";
-import { SendIcon } from "@/icons/SendIcon";
-import { InboxIcon } from "@/icons/InboxIcon";
-import { TruncatedAddress } from "./TruncatedAddress";
+import { SendIcon } from "@/ui/icons/SendIcon";
+import { InboxIcon } from "@/ui/icons/InboxIcon";
+import { TruncatedAddress } from "@/ui/TruncatedAddress";
 
 type Props = {
   commitment: InputCommitment;

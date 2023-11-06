@@ -1,13 +1,13 @@
 "use client";
 
 import { ChallengeStatus, InputCommitment, batcher } from "@/common";
-import { FilterForm } from "./FilterForm";
-import { FilterInput } from "./FilterInput";
-import { FilterSelect } from "./FilterSelect";
+import { FilterForm } from "@/ui/FilterForm";
+import { FilterInput } from "@/ui/FilterInput";
+import { FilterSelect } from "@/ui/FilterSelect";
 import { ChallengeConfig } from "@/getChallengeConfig";
 import { Commitment } from "./Commitment";
 import { useEffect, useState } from "react";
-import { PendingIcon } from "@/icons/PendingIcon";
+import { PendingIcon } from "@/ui/icons/PendingIcon";
 
 type Props = {
   latestBlockNumber: bigint;

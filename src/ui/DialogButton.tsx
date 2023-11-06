@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import { twMerge } from "tailwind-merge";
-import { CloseIcon } from "@/icons/CloseIcon";
+import { CloseIcon } from "@/ui/icons/CloseIcon";
 
 type Props = {
   label: ReactNode;
@@ -23,10 +23,10 @@ export function DialogButton({ label, children }: Props) {
         </button>
       </Dialog.Trigger>
       <Dialog.Portal>
-        <Dialog.Overlay className="fixed inset-0 bg-black/60 grid place-items-center overflow-y-auto">
-          <Dialog.Content className="bg-white text-black p-20 relative">
+        <Dialog.Overlay className="fixed inset-0 bg-neutral-900/90 grid place-items-center overflow-y-auto">
+          <Dialog.Content className="bg-black p-20 relative">
             <Dialog.Close
-              className="absolute top-0 right-0 text-xl p-2"
+              className="absolute top-0 right-0 text-xl p-2 hover:text-white"
               title="Close"
             >
               <CloseIcon />

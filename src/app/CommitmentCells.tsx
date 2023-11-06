@@ -7,15 +7,15 @@ import {
   secondsPerBlock,
 } from "@/common";
 import { ChallengeConfig } from "@/getChallengeConfig";
-import { useLatestBlockNumber } from "@/useLatestBlockNumber";
 import { LabeledCell } from "./LabeledCell";
-import { ShortTimestamp } from "./ShortTimestamp";
+import { ShortTimestamp } from "@/ui/ShortTimestamp";
 import { getChallengeStatus } from "@/getChallengeStatus";
 import { bigIntMax } from "@latticexyz/common/utils";
-import { TruncatedAddress } from "./TruncatedAddress";
+import { TruncatedAddress } from "@/ui/TruncatedAddress";
 import { ChallengeStatusCell } from "./ChallengeStatusCell";
 import { CommitmentAddresses } from "./CommitmentAddresses";
 import { CommitmentButtons } from "./CommitmentButtons";
+import { useBlockNumber } from "wagmi";
 
 type Props = {
   latestBlockNumber: bigint;
@@ -28,7 +28,7 @@ export function CommitmentCells({
   challengeConfig,
   commitment,
 }: Props) {
-  const blockNumber = useLatestBlockNumber(latestBlockNumber);
+  const blockNumber = useBlockNumber({ watch: true }).data ?? latestBlockNumber;
   const challenge = commitment.challenges[0];
   const status = getChallengeStatus(challenge, challengeConfig, blockNumber);
 

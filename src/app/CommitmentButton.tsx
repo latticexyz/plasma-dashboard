@@ -1,12 +1,15 @@
-import { InputCommitment, ChallengeStatus } from "@/common";
-import { TerminalIcon } from "@/icons/TerminalIcon";
-import { DialogButton } from "./DialogButton";
-import { ChallengeButton } from "./ChallengeButton";
+import {
+  InputCommitment,
+  ChallengeStatus,
+  challengeContractAbi,
+  challengeContract,
+} from "@/common";
+import { TerminalIcon } from "@/ui/icons/TerminalIcon";
+import { DialogButton } from "@/ui/DialogButton";
 import { BondBalance } from "./BondBalance";
-import { DepositButton } from "./DepositButton";
 import { ChallengeConfig } from "@/getChallengeConfig";
-import { ResolveButton } from "./ResolveButton";
-import { ExpireButton } from "./ExpireButton";
+import { redstoneDevnetL1 } from "@/chains/redstoneDevnetL1";
+import { ConnectedWriteButton } from "@/ui/ConnectedWriteButton";
 
 type Props = {
   challengeConfig: ChallengeConfig;
@@ -30,15 +33,29 @@ export function CommitmentButton({
           </>
         }
       >
-        <div>TODO: explain wtf this is for</div>
-        <div>
-          <ChallengeButton commitment={commitment} />
-        </div>
-        <div>
-          {/* TODO: move this to a better spot */}
+        <div className="flex flex-col items-start gap-2 text-sm">
+          <ConnectedWriteButton
+            write={{
+              chainId: redstoneDevnetL1.id,
+              address: challengeContract,
+              abi: challengeContractAbi,
+              functionName: "challenge",
+              args: [commitment.blockNumber, commitment.inputHash],
+            }}
+            label="Challenge"
+          />
+          <ConnectedWriteButton
+            write={{
+              chainId: redstoneDevnetL1.id,
+              address: challengeContract,
+              abi: challengeContractAbi,
+              functionName: "deposit",
+              value: challengeConfig.bondSize,
+            }}
+            label="Deposit bond"
+          />
           <div>
-            Bond balance: <BondBalance />{" "}
-            <DepositButton challengeConfig={challengeConfig} />
+            Bond balance: <BondBalance />
           </div>
         </div>
       </DialogButton>
@@ -56,10 +73,18 @@ export function CommitmentButton({
           </>
         }
       >
-        <div>TODO: explain wtf this is for</div>
-        <div>TODO: get input data from somewhere</div>
-        <div>
-          <ResolveButton commitment={commitment} inputData="0x" />
+        <div className="text-sm">
+          <ConnectedWriteButton
+            write={{
+              chainId: redstoneDevnetL1.id,
+              address: challengeContract,
+              abi: challengeContractAbi,
+              functionName: "resolve",
+              // TODO: get input data from somewhere
+              args: [commitment.blockNumber, "0x"],
+            }}
+            label="Resolve"
+          />
         </div>
       </DialogButton>
     );
@@ -76,9 +101,17 @@ export function CommitmentButton({
           </>
         }
       >
-        <div>TODO: explain wtf this is for</div>
-        <div>
-          <ExpireButton commitment={commitment} />
+        <div className="text-sm">
+          <ConnectedWriteButton
+            write={{
+              chainId: redstoneDevnetL1.id,
+              address: challengeContract,
+              abi: challengeContractAbi,
+              functionName: "expire",
+              args: [commitment.blockNumber, commitment.inputHash],
+            }}
+            label="Expire"
+          />
         </div>
       </DialogButton>
     );

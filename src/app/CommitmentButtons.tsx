@@ -1,6 +1,5 @@
 import { ChallengeStatus, InputCommitment } from "@/common";
-import { ArrowRightIcon } from "@/icons/ArrowRightIcon";
-import { TerminalIcon } from "@/icons/TerminalIcon";
+import { ArrowRightIcon } from "@/ui/icons/ArrowRightIcon";
 import Link from "next/link";
 import { CommitmentButton } from "./CommitmentButton";
 import { ChallengeConfig } from "@/getChallengeConfig";
