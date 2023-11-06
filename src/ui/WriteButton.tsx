@@ -6,11 +6,17 @@ import {
   usePrepareContractWrite,
   useWaitForTransaction,
   UsePrepareContractWriteConfig,
+  usePublicClient,
 } from "wagmi";
 import { Button } from "./Button";
-import { ReactNode, useEffect } from "react";
+import { ReactNode, useCallback, useEffect } from "react";
 import { HoverLabel } from "./HoverLabel";
 import { useDeepMemo } from "@/useDeepMemo";
+import { toast } from "react-toastify";
+import { useCreatePromise } from "@/useCreatePromise";
+import { wait } from "@latticexyz/common/utils";
+import { afterUnless } from "@/afterUnless";
+import { getTransaction, waitForTransactionReceipt } from "viem/actions";
 
 export type Props<
   abi extends Abi | readonly unknown[],
@@ -26,16 +32,56 @@ export type Props<
 export function WriteButton<
   abi extends Abi | readonly unknown[],
   functionName extends string
->({ write, label }: Props<abi, functionName>) {
-  const memoizedWrite = useDeepMemo(write);
-  const prepareResult = usePrepareContractWrite(memoizedWrite);
+>({ write: writeArgs, label }: Props<abi, functionName>) {
+  const publicClient = usePublicClient({ chainId: writeArgs.chainId });
+  const memoizedWriteArgs = useDeepMemo(writeArgs);
+  const prepareResult = usePrepareContractWrite(memoizedWriteArgs);
   const writeResult = useContractWrite<abi, functionName, "prepared">(
     prepareResult.config
   );
+
   const transactionResult = useWaitForTransaction({
-    chainId: write.chainId,
-    ...writeResult.data,
+    chainId: memoizedWriteArgs.chainId,
+    hash: writeResult.data?.hash,
   });
+
+  const { writeAsync } = writeResult;
+  const [writeAndConfirmResult, writeAndConfirm] = useCreatePromise(
+    useCallback(
+      async (onProgress: (message: string) => void) => {
+        if (!writeAsync) {
+          throw new Error("Contract call could not be prepared");
+        }
+
+        onProgress("Calling contract…");
+
+        const writePromise = writeAsync();
+        afterUnless(wait(1000 * 5), writePromise, () =>
+          onProgress("Please confirm transaction in your wallet…")
+        );
+        const { hash } = await writePromise;
+
+        onProgress("Finalizing transaction…");
+
+        // TODO: figure out why calling `waitForTransactionReceipt` immediately results in a `TransactionReceiptNotFoundError`
+        await wait(250);
+
+        const receiptPromise = waitForTransactionReceipt(publicClient, {
+          hash,
+        });
+        afterUnless(wait(1000 * 15), writePromise, () =>
+          onProgress("It can sometimes take a while to finalize a transaction…")
+        );
+        afterUnless(wait(1000 * 30), writePromise, () =>
+          onProgress("Still working on it…")
+        );
+        const receipt = await receiptPromise;
+
+        return { hash, receipt };
+      },
+      [publicClient, writeAsync]
+    )
+  );
 
   // TODO: invalidate cache or otherwise reload tx data
 
@@ -71,7 +117,37 @@ export function WriteButton<
   }
 
   return (
-    <Button pending={writeResult.isLoading} onClick={writeResult.write}>
+    <Button
+      pending={writeResult.isLoading}
+      onClick={(event) => {
+        event.preventDefault();
+
+        const toastId = toast.loading("Preparing…");
+        writeAndConfirm((message) =>
+          toast.update(toastId, { render: message })
+        ).then(
+          (result) => {
+            // TODO: link to block explorer
+            toast.update(toastId, {
+              isLoading: false,
+              type: "success",
+              render: "Success!",
+              autoClose: 15000,
+              closeButton: true,
+            });
+          },
+          (error) => {
+            toast.update(toastId, {
+              isLoading: false,
+              type: "error",
+              render: String(error.message),
+              autoClose: 15000,
+              closeButton: true,
+            });
+          }
+        );
+      }}
+    >
       {label}
     </Button>
   );
