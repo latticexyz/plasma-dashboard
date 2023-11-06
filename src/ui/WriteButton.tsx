@@ -52,7 +52,7 @@ export function WriteButton<
           throw new Error("Contract call could not be prepared");
         }
 
-        onProgress("Calling contract…");
+        onProgress("Starting transaction…");
 
         const writePromise = writeAsync();
         afterUnless(wait(1000 * 5), writePromise, () =>
@@ -68,10 +68,10 @@ export function WriteButton<
         const receiptPromise = waitForTransactionReceipt(publicClient, {
           hash,
         });
-        afterUnless(wait(1000 * 15), writePromise, () =>
+        afterUnless(wait(1000 * 15), receiptPromise, () =>
           onProgress("It can sometimes take a while to finalize a transaction…")
         );
-        afterUnless(wait(1000 * 30), writePromise, () =>
+        afterUnless(wait(1000 * 30), receiptPromise, () =>
           onProgress("Still working on it…")
         );
         const receipt = await receiptPromise;
