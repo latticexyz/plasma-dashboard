@@ -13,6 +13,7 @@
   "dependencies": {
     "@latticexyz/common": "^2.0.0-main-08d7c471",
     "@radix-ui/react-dialog": "^1.0.5",
+    "@radix-ui/react-toast": "^1.1.5",
     "@radix-ui/react-tooltip": "^1.0.7",
     "@rainbow-me/rainbowkit": "^1.2.0",
     "dotenv": "^16.3.1",
@@ -25,7 +26,8 @@
     "react-intersection-observer": "^9.5.2",
     "tailwind-merge": "^1.14.0",
     "viem": "^1.18.2",
-    "wagmi": "^1.4.5"
+    "wagmi": "^1.4.5",
+    "zustand": "^4.4.6"
   },
   "devDependencies": {
     "@types/node": "^20",

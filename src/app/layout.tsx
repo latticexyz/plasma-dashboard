@@ -7,6 +7,7 @@ import { twMerge } from "tailwind-merge";
 import { ReactNode } from "react";
 import { WalletProvider } from "@/WalletProvider";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { Toasts } from "./Toasts";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -32,6 +33,8 @@ export default function Layout({ children }: Props) {
           <ConnectButton />
 
           <div className="mx-auto max-w-screen-lg py-16">{children}</div>
+
+          <Toasts />
         </WalletProvider>
       </body>
     </html>

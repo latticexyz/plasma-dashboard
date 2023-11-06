@@ -11,6 +11,7 @@ import { Button } from "./Button";
 import { ReactNode, useEffect } from "react";
 import { HoverLabel } from "./HoverLabel";
 import { useDeepMemo } from "@/useDeepMemo";
+import { useStore } from "@/useStore";
 
 export type Props<
   abi extends Abi | readonly unknown[],
@@ -27,6 +28,7 @@ export function WriteButton<
   abi extends Abi | readonly unknown[],
   functionName extends string
 >({ write, label }: Props<abi, functionName>) {
+  const addToast = useStore((state) => state.addToast);
   const memoizedWrite = useDeepMemo(write);
   const prepareResult = usePrepareContractWrite(memoizedWrite);
   const writeResult = useContractWrite<abi, functionName, "prepared">(
@@ -71,7 +73,13 @@ export function WriteButton<
   }
 
   return (
-    <Button pending={writeResult.isLoading} onClick={writeResult.write}>
+    <Button
+      pending={writeResult.isLoading}
+      onClick={() => {
+        writeResult.write?.();
+        addToast("hello world");
+      }}
+    >
       {label}
     </Button>
   );
