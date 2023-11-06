@@ -20,9 +20,6 @@ export function Button({
   children,
   ...props
 }: Props) {
-  if (error) {
-    console.log("got error", error);
-  }
   return (
     <Tooltip.Provider delayDuration={0}>
       <Tooltip.Root>

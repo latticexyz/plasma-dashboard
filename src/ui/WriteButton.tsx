@@ -8,7 +8,7 @@ import {
   UsePrepareContractWriteConfig,
 } from "wagmi";
 import { Button } from "./Button";
-import { ReactNode } from "react";
+import { ReactNode, useEffect } from "react";
 import { HoverLabel } from "./HoverLabel";
 import { useDeepMemo } from "@/useDeepMemo";
 
@@ -36,6 +36,8 @@ export function WriteButton<
     chainId: write.chainId,
     ...writeResult.data,
   });
+
+  // TODO: invalidate cache or otherwise reload tx data
 
   if (prepareResult.isLoading) {
     return <Button pending="Estimating gas…">{label}</Button>;

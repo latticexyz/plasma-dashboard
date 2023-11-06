@@ -6,6 +6,7 @@ export function useBondBalance() {
   const { address } = useAccount();
   return useContractRead({
     enabled: !!address,
+    watch: true,
     chainId: redstoneDevnetL1.id,
     address: challengeContract,
     abi: challengeContractAbi,
