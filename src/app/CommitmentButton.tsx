@@ -90,14 +90,14 @@ export function CommitmentButton({
     );
   }
 
-  if (status === ChallengeStatus.Expiring) {
+  if (status === ChallengeStatus.Expired) {
     return (
       <DialogButton
         className="flex-grow"
         label={
           <>
             <TerminalIcon />
-            <span className="font-mono uppercase text-xs">Expire</span>
+            <span className="font-mono uppercase text-xs">Withdraw</span>
           </>
         }
       >
@@ -107,10 +107,10 @@ export function CommitmentButton({
               chainId: redstoneDevnetL1.id,
               address: challengeContract,
               abi: challengeContractAbi,
-              functionName: "expire",
+              functionName: "unblockBond",
               args: [commitment.blockNumber, commitment.inputHash],
             }}
-            label="Expire"
+            label="Unlock bond"
           />
         </div>
       </DialogButton>
