@@ -107,8 +107,9 @@ export function CommitmentButton({
               chainId: redstoneDevnetL1.id,
               address: challengeContract,
               abi: challengeContractAbi,
-              functionName: "unblockBond",
-              args: [commitment.blockNumber, commitment.inputHash],
+              // TODO
+              // functionName: "unblockBond",
+              // args: [commitment.blockNumber, commitment.inputHash],
             }}
             label="Unlock bond"
           />
