@@ -5,11 +5,11 @@ import {
   challengeContract,
 } from "@/common";
 import { TerminalIcon } from "@/ui/icons/TerminalIcon";
-import { DialogButton } from "@/ui/DialogButton";
 import { BondBalance } from "./BondBalance";
 import { ChallengeConfig } from "@/getChallengeConfig";
 import { redstoneDevnetL1 } from "@/chains/redstoneDevnetL1";
 import { ConnectedWriteButton } from "@/ui/ConnectedWriteButton";
+import { Modal } from "@/ui/Modal";
 
 type Props = {
   challengeConfig: ChallengeConfig;
@@ -24,13 +24,17 @@ export function CommitmentButton({
 }: Props) {
   if (status === ChallengeStatus.Unchallenged) {
     return (
-      <DialogButton
-        className="flex-grow"
-        label={
-          <>
+      <Modal
+        title="Challenge"
+        description="If data is not retrievable, challenge the the commitment to force the data provider to make the data available, or the network considers the input no longer valid."
+        trigger={
+          <button
+            type="button"
+            className="flex-grow flex items-center px-3 py-2 gap-2 bg-white text-black"
+          >
             <TerminalIcon />
             <span className="font-mono uppercase text-xs">Challenge</span>
-          </>
+          </button>
         }
       >
         <div className="flex flex-col items-start gap-2 text-sm">
@@ -58,19 +62,23 @@ export function CommitmentButton({
             Bond balance: <BondBalance />
           </div>
         </div>
-      </DialogButton>
+      </Modal>
     );
   }
 
   if (status === ChallengeStatus.Challenged) {
     return (
-      <DialogButton
-        className="flex-grow"
-        label={
-          <>
+      <Modal
+        title="Resolve"
+        description="Prove that you have the data for a challenged block to make sure the transactions included in the block are kept as part of the network state."
+        trigger={
+          <button
+            type="button"
+            className="flex-grow flex items-center px-3 py-2 gap-2 bg-white text-black"
+          >
             <TerminalIcon />
             <span className="font-mono uppercase text-xs">Resolve</span>
-          </>
+          </button>
         }
       >
         <div className="text-sm">
@@ -86,19 +94,23 @@ export function CommitmentButton({
             label="Resolve"
           />
         </div>
-      </DialogButton>
+      </Modal>
     );
   }
 
   if (status === ChallengeStatus.Expired) {
     return (
-      <DialogButton
-        className="flex-grow"
-        label={
-          <>
+      <Modal
+        title="Unblock bond"
+        description="Since the data was not made available for this input commitment, or the challenge expired, your bond has now been made claimable."
+        trigger={
+          <button
+            type="button"
+            className="flex-grow flex items-center px-3 py-2 gap-2 bg-white text-black"
+          >
             <TerminalIcon />
             <span className="font-mono uppercase text-xs">Withdraw</span>
-          </>
+          </button>
         }
       >
         <div className="text-sm">
@@ -113,7 +125,7 @@ export function CommitmentButton({
             label="Unlock bond"
           />
         </div>
-      </DialogButton>
+      </Modal>
     );
   }
 

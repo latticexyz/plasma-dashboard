@@ -16,9 +16,9 @@ export function Modal({ title, trigger, description, children }: Props) {
       <Dialog.Trigger asChild>{trigger}</Dialog.Trigger>
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0 bg-neutral-950/80 animate-in fade-in backdrop-blur grid place-items-center overflow-y-auto">
-          <Dialog.Content className="min-w-[24rem] max-w-[48rem] bg-white/10 border border-white/20 flex flex-col gap-4 p-5">
+          <Dialog.Content className="w-[28rem] bg-neutral-800/60 border border-white/20 flex flex-col gap-4 p-5">
             <div className="flex gap-4 items-start">
-              <Dialog.Title className="flex-grow text-lg leading-tight font-mono uppercase text-white">
+              <Dialog.Title className="flex-grow text-xl leading-tight font-mono uppercase text-white">
                 {title}
               </Dialog.Title>
               <Dialog.Close
