@@ -13,8 +13,6 @@ export function ChallengeStatusLabel({ status }: Props) {
       return <>Challenged</>;
     case ChallengeStatus.Resolved:
       return <>Resolved</>;
-    case ChallengeStatus.Expiring:
-      return <>Expiring</>;
     case ChallengeStatus.Expired:
       return <>Expired</>;
     case ChallengeStatus.Unknown:
