@@ -1,6 +1,6 @@
 "use client";
 
-import { Abi, Address, Client } from "viem";
+import { Abi, Address, Client, GetFunctionArgs, InferFunctionName } from "viem";
 import {
   useContractWrite,
   usePrepareContractWrite,
@@ -25,7 +25,8 @@ export type Props<
   write: UsePrepareContractWriteConfig<abi, functionName, number> & {
     chainId: number;
     address: Address;
-  };
+    functionName: InferFunctionName<abi, functionName>;
+  } & GetFunctionArgs<abi, functionName>;
 };
 
 export function WriteButton<
