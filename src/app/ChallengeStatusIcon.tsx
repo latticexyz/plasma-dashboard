@@ -13,8 +13,6 @@ export function ChallengeStatusIcon({ status }: Props) {
       return <span className="inline-flex w-1.5 h-1.5 bg-yellow-500"></span>;
     case ChallengeStatus.Resolved:
       return <span className="inline-flex w-1.5 h-1.5 bg-green-500"></span>;
-    case ChallengeStatus.Expiring:
-      return <span className="inline-flex w-1.5 h-1.5 bg-purple-500"></span>;
     case ChallengeStatus.Expired:
       return <span className="inline-flex w-1.5 h-1.5 bg-red-500"></span>;
     case ChallengeStatus.Unknown:

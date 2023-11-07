@@ -21,13 +21,11 @@ export function getChallengeStatus(
       return ChallengeStatus.Unchallenged;
     case 1: // Active
       if (!isInResolveWindow) {
-        return ChallengeStatus.Expiring;
+        return ChallengeStatus.Expired;
       }
       return ChallengeStatus.Challenged;
     case 2: // Resolved
       return ChallengeStatus.Resolved;
-    case 3: // Expired
-      return ChallengeStatus.Expired;
   }
 
   // TODO: should we return `unknown` type instead of this?

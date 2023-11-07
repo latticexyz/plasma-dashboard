@@ -25,7 +25,6 @@ export enum ChallengeStatus {
   Unchallenged = "unchallenged",
   Challenged = "challenged",
   Resolved = "resolved",
-  Expiring = "expiring",
   Expired = "expired",
   Unknown = "unknown",
 }

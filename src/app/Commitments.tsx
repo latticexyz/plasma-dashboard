@@ -66,31 +66,18 @@ export function Commitments({
             <option value={ChallengeStatus.Unchallenged}>Unchallenged</option>
             <option value={ChallengeStatus.Challenged}>Challenged</option>
             <option value={ChallengeStatus.Resolved}>Resolved</option>
-            <option value={ChallengeStatus.Expiring}>Expiring</option>
             <option value={ChallengeStatus.Expired}>Expired</option>
           </FilterSelect>
         </label>
-        <div className="flex items-center justify-between gap-2">
-          <label className="flex flex-col gap-1">
-            <span className="font-mono text-xs uppercase">Address</span>
-            <FilterSelect
-              name="addressSource"
-              className="bg-white/10 border border-white/20 text-white font-mono px-2 py-2"
-            >
-              <option>From</option>
-              <option>To</option>
-            </FilterSelect>
-          </label>
-          <label className="flex flex-col gap-1">
-            <span className="font-mono text-xs uppercase">&nbsp;</span>
-            <FilterInput
-              name="address"
-              type="text"
-              className="bg-white/10 border border-white/20 text-white placeholder:text-white/30 font-mono px-3 py-2 w-64"
-              placeholder={batcher}
-            />
-          </label>
-        </div>
+        <label className="flex flex-col gap-1">
+          <span className="font-mono text-xs uppercase">Challenged by</span>
+          <FilterInput
+            name="from"
+            type="text"
+            className="bg-white/10 border border-white/20 text-white placeholder:text-white/30 font-mono px-3 py-2 w-64"
+            placeholder={batcher}
+          />
+        </label>
         <button type="submit" className="hidden">
           Submit
         </button>

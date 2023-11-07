@@ -118,10 +118,7 @@ export function CommitmentCells({
     );
   }
 
-  if (
-    status === ChallengeStatus.Expiring ||
-    status === ChallengeStatus.Expired
-  ) {
+  if (status === ChallengeStatus.Expired) {
     return (
       <>
         <ChallengeStatusCell status={status} />
