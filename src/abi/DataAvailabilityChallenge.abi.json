@@ -1,22 +1,6 @@
 [
   {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_challengeWindow",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_resolveWindow",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_bondSize",
-        "type": "uint256"
-      }
-    ],
+    "inputs": [],
     "stateMutability": "nonpayable",
     "type": "constructor"
   },
@@ -48,18 +32,53 @@
   },
   {
     "inputs": [],
+    "name": "ChallengeNotExpired",
+    "type": "error"
+  },
+  {
+    "inputs": [],
     "name": "ChallengeWindowNotOpen",
     "type": "error"
   },
   {
-    "inputs": [],
-    "name": "ResolveWindowNotClosed",
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "providedDataHash",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "expectedHash",
+        "type": "bytes32"
+      }
+    ],
+    "name": "InvalidInputData",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "ResolveWindowNotOpen",
+    "name": "WithdrawalFailed",
     "type": "error"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "balance",
+        "type": "uint256"
+      }
+    ],
+    "name": "BalanceChanged",
+    "type": "event"
   },
   {
     "anonymous": false,
@@ -91,12 +110,44 @@
     "inputs": [
       {
         "indexed": false,
-        "internalType": "bytes32",
-        "name": "expiredChallengesHead",
-        "type": "bytes32"
+        "internalType": "uint8",
+        "name": "version",
+        "type": "uint8"
       }
     ],
-    "name": "ExpiredChallengesHeadUpdated",
+    "name": "Initialized",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "previousOwner",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
+      }
+    ],
+    "name": "OwnershipTransferred",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "challengeWindow",
+        "type": "uint256"
+      }
+    ],
+    "name": "RequiredBondSizeChanged",
     "type": "event"
   },
   {
@@ -146,7 +197,7 @@
     ],
     "name": "challenge",
     "outputs": [],
-    "stateMutability": "nonpayable",
+    "stateMutability": "payable",
     "type": "function"
   },
   {
@@ -178,18 +229,23 @@
     "name": "challenges",
     "outputs": [
       {
-        "internalType": "enum ChallengeStatus",
-        "name": "status",
-        "type": "uint8"
-      },
-      {
         "internalType": "address",
         "name": "challenger",
         "type": "address"
       },
       {
         "internalType": "uint256",
+        "name": "lockedBond",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
         "name": "startBlock",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "resolvedBlock",
         "type": "uint256"
       }
     ],
@@ -216,19 +272,12 @@
         "type": "bytes32"
       }
     ],
-    "name": "expire",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "expiredChallengesHead",
+    "name": "getChallengeStatus",
     "outputs": [
       {
-        "internalType": "bytes32",
+        "internalType": "enum ChallengeStatus",
         "name": "",
-        "type": "bytes32"
+        "type": "uint8"
       }
     ],
     "stateMutability": "view",
@@ -237,9 +286,62 @@
   {
     "inputs": [
       {
+        "internalType": "address",
+        "name": "_owner",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_challengeWindow",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_resolveWindow",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_bondSize",
+        "type": "uint256"
+      }
+    ],
+    "name": "initialize",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "owner",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "renounceOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "uint256",
         "name": "challengedBlockNumber",
         "type": "uint256"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "challengedHash",
+        "type": "bytes32"
       },
       {
         "internalType": "bytes",
@@ -266,10 +368,71 @@
     "type": "function"
   },
   {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_bondSize",
+        "type": "uint256"
+      }
+    ],
+    "name": "setBondSize",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
+      }
+    ],
+    "name": "transferOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "challengedBlockNumber",
+        "type": "uint256"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "challengedHash",
+        "type": "bytes32"
+      }
+    ],
+    "name": "unlockBond",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "version",
+    "outputs": [
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "withdraw",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
+  },
+  {
+    "stateMutability": "payable",
+    "type": "receive"
   }
 ]
