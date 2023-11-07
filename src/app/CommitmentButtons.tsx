@@ -5,12 +5,14 @@ import { CommitmentButton } from "./CommitmentButton";
 import { ChallengeConfig } from "@/getChallengeConfig";
 
 type Props = {
+  blockNumber: bigint;
   challengeConfig: ChallengeConfig;
   commitment: InputCommitment;
   status: ChallengeStatus;
 };
 
 export function CommitmentButtons({
+  blockNumber,
   challengeConfig,
   commitment,
   status,
@@ -19,6 +21,7 @@ export function CommitmentButtons({
     <div className="flex items-center justify-end">
       <div className="flex-grow flex gap-2 justify-end">
         <CommitmentButton
+          blockNumber={blockNumber}
           challengeConfig={challengeConfig}
           commitment={commitment}
           status={status}

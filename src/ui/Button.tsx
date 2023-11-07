@@ -7,7 +7,6 @@ type Props = DetailedHTMLProps<
   HTMLButtonElement
 > & {
   pending?: boolean;
-  error?: ReactNode;
 };
 
 export function Button({
@@ -15,7 +14,6 @@ export function Button({
   className,
   pending,
   disabled,
-  error,
   title,
   children,
   ...props

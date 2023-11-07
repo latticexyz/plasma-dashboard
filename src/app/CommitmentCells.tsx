@@ -56,6 +56,7 @@ export function CommitmentCells({
         </LabeledCell>
         <CommitmentAddresses commitment={commitment} />
         <CommitmentButtons
+          blockNumber={blockNumber}
           challengeConfig={challengeConfig}
           commitment={commitment}
           status={status}
@@ -86,6 +87,7 @@ export function CommitmentCells({
         </LabeledCell>
         <CommitmentAddresses commitment={commitment} />
         <CommitmentButtons
+          blockNumber={blockNumber}
           challengeConfig={challengeConfig}
           commitment={commitment}
           status={status}
@@ -110,6 +112,7 @@ export function CommitmentCells({
         </LabeledCell>
         <CommitmentAddresses commitment={commitment} />
         <CommitmentButtons
+          blockNumber={blockNumber}
           challengeConfig={challengeConfig}
           commitment={commitment}
           status={status}
@@ -136,6 +139,7 @@ export function CommitmentCells({
         </LabeledCell>
         <CommitmentAddresses commitment={commitment} />
         <CommitmentButtons
+          blockNumber={blockNumber}
           challengeConfig={challengeConfig}
           commitment={commitment}
           status={status}
