@@ -1,6 +1,6 @@
 "use client";
 
-import { Abi, Address, Client } from "viem";
+import { Abi, Client } from "viem";
 import {
   useContractWrite,
   usePrepareContractWrite,
@@ -22,10 +22,7 @@ export type Props<
   functionName extends string
 > = {
   label: ReactNode;
-  write: UsePrepareContractWriteConfig<abi, functionName, number> & {
-    chainId: number;
-    address: Address;
-  };
+  write: UsePrepareContractWriteConfig<abi, functionName, number>;
 };
 
 export function WriteButton<
@@ -105,22 +102,8 @@ export function WriteButton<
   }
 
   if (prepareResult.isError) {
-    return (
-      <Button
-        disabled
-        error={
-          prepareResult.error instanceof Error ? (
-            <span className="flex font-mono whitespace-pre p-2 pb-8">
-              {prepareResult.error.message}
-            </span>
-          ) : (
-            "Could not estimate gas"
-          )
-        }
-      >
-        {label}
-      </Button>
-    );
+    // TODO: display better message for specific kinds of errors (eth balance, etc)
+    return <Button disabled>Could not estimate gas</Button>;
   }
 
   return (
