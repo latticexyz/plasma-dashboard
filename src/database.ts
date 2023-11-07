@@ -6,4 +6,5 @@ if (!process.env.DATABASE_URL)
   throw new Error("Missing DATABASE_URL env variable");
 
 const client = postgres(process.env.DATABASE_URL);
-export const database = drizzle(client, { schema });
+// TODO: figure out why drizzle doesn't like this client type, maybe version misalignment?
+export const database = drizzle(client as any, { schema });
