@@ -3,7 +3,7 @@ import { InputCommitment } from "@/common";
 import { ShortTimestamp } from "@/ui/ShortTimestamp";
 
 type Props = {
-  commitment: InputCommitment;
+  commitment: Pick<InputCommitment, "blockNumber" | "blockTimestamp">;
 };
 
 export function CommitmentBlock({ commitment }: Props) {

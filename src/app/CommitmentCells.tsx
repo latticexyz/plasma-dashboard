@@ -27,7 +27,7 @@ export function CommitmentCells({
   const blockNumber =
     useBlockNumber({ chainId: holesky.id, watch: true }).data ??
     latestBlockNumber;
-  const challenge = commitment.challenges[0];
+  const challenge = commitment.latestChallenge;
   const status = getChallengeStatus(challenge, challengeConfig, blockNumber);
 
   if (!challenge || status === ChallengeStatus.Unchallenged) {

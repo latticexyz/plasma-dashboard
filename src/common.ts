@@ -4,6 +4,7 @@ import challengeContractAbi from "@/abi/DataAvailabilityChallenge.abi.json";
 export { challengeContractAbi };
 
 export type Challenge = {
+  chainId: number;
   blockNumber: bigint;
   blockTimestamp: number;
   txHash: Hex;
@@ -12,13 +13,14 @@ export type Challenge = {
 };
 
 export type InputCommitment = {
+  chainId: number;
   blockNumber: bigint;
   blockTimestamp: number;
   txHash: Hex;
   txFrom: Address;
   txTo: Address;
   inputHash: Hex;
-  challenges: Challenge[];
+  latestChallenge: Challenge | null;
 };
 
 export enum ChallengeStatus {

@@ -2,7 +2,7 @@ import { ChallengeStatus, Challenge } from "./common";
 import { ChallengeConfig } from "./getChallengeConfig";
 
 export function getChallengeStatus(
-  challenge: Challenge | undefined,
+  challenge: Challenge | null,
   challengeConfig: ChallengeConfig,
   blockNumber: bigint
 ): ChallengeStatus {

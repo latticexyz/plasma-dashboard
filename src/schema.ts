@@ -4,7 +4,7 @@ import { asNumber, asHex, asBigInt, asAddress } from "./columnTypes";
 
 // TODO: make integration table columns actually not null, or remove `notNull()` usage here
 
-export const inputCommitments = alias(
+export const inputCommitmentsTable = alias(
   pgTable("tx_inputs", {
     chainId: asNumber("chain_id", "numeric").notNull(),
     blockHash: asHex("block_hash").notNull(),
@@ -19,7 +19,7 @@ export const inputCommitments = alias(
   "inputCommitments"
 );
 
-export const challenges = alias(
+export const challengesTable = alias(
   pgTable("challenge_status", {
     chainId: asNumber("chain_id", "numeric").notNull(),
     blockHash: asHex("block_hash").notNull(),
@@ -38,21 +38,24 @@ export const challenges = alias(
   "challenges"
 );
 
-export const challengeInputCommitment = relations(challenges, ({ one }) => ({
-  inputCommitment: one(inputCommitments, {
-    fields: [
-      challenges.chainId,
-      challenges.challengedBlockNumber,
-      challenges.challengedHash,
-    ],
-    references: [
-      inputCommitments.chainId,
-      inputCommitments.blockNumber,
-      inputCommitments.inputHash,
-    ],
-  }),
-}));
+export const challengeInputCommitment = relations(
+  challengesTable,
+  ({ one }) => ({
+    inputCommitment: one(inputCommitmentsTable, {
+      fields: [
+        challengesTable.chainId,
+        challengesTable.challengedBlockNumber,
+        challengesTable.challengedHash,
+      ],
+      references: [
+        inputCommitmentsTable.chainId,
+        inputCommitmentsTable.blockNumber,
+        inputCommitmentsTable.inputHash,
+      ],
+    }),
+  })
+);
 
-export const inputChallenges = relations(inputCommitments, ({ many }) => ({
-  challenges: many(challenges),
+export const inputChallenges = relations(inputCommitmentsTable, ({ many }) => ({
+  challenges: many(challengesTable),
 }));
