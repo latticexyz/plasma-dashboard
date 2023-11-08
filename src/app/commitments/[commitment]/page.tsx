@@ -16,6 +16,7 @@ import { isHex } from "viem";
 import { getBlockNumber } from "viem/actions";
 import { holesky } from "@/chains/holesky";
 import { getInputDataUrl } from "@/getInputDataUrl";
+import { EnvelopeIcon } from "@/ui/icons/EnvelopeIcon";
 
 // Force Next.js to always re-render this, otherwise it will cache the fetch for the latest block number, making it quickly stale and affecting the defaults set up deeper in the component tree.
 export const dynamic = "force-dynamic";
@@ -108,24 +109,40 @@ export default async function CommitmentPage({ params }: Props) {
                 {commitment.txTo}
               </div>
             </div>
+            <div className="flex">
+              <div className="flex flex-shrink-0 w-32 gap-2 items-center">
+                <div className="flex-shrink-0">
+                  <EnvelopeIcon />
+                </div>
+                <div className="font-mono uppercase text-sm">Input hash</div>
+              </div>
+              <div className="font-mono text-sm text-white">
+                {commitment.inputHash}
+              </div>
+            </div>
           </div>
-          <div className="flex-grow flex gap-2 justify-end">
-            <Link
-              href={`${holesky.blockExplorers.default.url}/tx/${commitment.txHash}`}
-              className="flex-shrink-0 px-4 py-2 bg-white text-black font-mono uppercase text-sm"
-              target="_blank"
-              rel="noopener noreferer"
-            >
-              View tx
-            </Link>
-            <Link
-              href={getInputDataUrl(commitment.inputHash)}
-              className="flex-shrink-0 px-4 py-2 bg-white/20 text-white font-mono uppercase text-sm"
-              target="_blank"
-              rel="noopener noreferer"
-            >
-              Data
-            </Link>
+          <div className="self-stretch flex flex-col gap-2">
+            <div className="font-mono text-xs leading-none text-right">
+              TX: <TruncatedHex hex={commitment.txHash} />
+            </div>
+            <div className="flex-grow flex gap-2 justify-end items-center">
+              <Link
+                href={`${holesky.blockExplorers.default.url}/tx/${commitment.txHash}`}
+                className="flex-shrink-0 px-4 py-2 bg-white text-black font-mono uppercase text-sm"
+                target="_blank"
+                rel="noopener noreferer"
+              >
+                View tx
+              </Link>
+              <Link
+                href={getInputDataUrl(commitment.inputHash)}
+                className="flex-shrink-0 px-4 py-2 bg-white/20 text-white font-mono uppercase text-sm"
+                target="_blank"
+                rel="noopener noreferer"
+              >
+                Data
+              </Link>
+            </div>
           </div>
         </div>
         <div className="py-3">
