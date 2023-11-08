@@ -1,3 +1,4 @@
+import { holesky } from "wagmi/chains";
 import {
   InputCommitment,
   ChallengeStatus,
@@ -6,7 +7,6 @@ import {
 } from "@/common";
 import { TerminalIcon } from "@/ui/icons/TerminalIcon";
 import { ChallengeConfig } from "@/getChallengeConfig";
-import { redstoneDevnetL1 } from "@/chains/redstoneDevnetL1";
 import { ConnectedWriteButton } from "@/ui/ConnectedWriteButton";
 import { Modal } from "@/ui/Modal";
 import { ChallengeModalContent } from "./ChallengeModalContent";
@@ -67,7 +67,7 @@ export function CommitmentButton({
           <div className="text-sm">
             <ConnectedWriteButton
               write={{
-                chainId: redstoneDevnetL1.id,
+                chainId: holesky.id,
                 address: challengeContract,
                 abi: challengeContractAbi,
                 functionName: "resolve",
@@ -102,7 +102,7 @@ export function CommitmentButton({
           <div className="text-sm">
             <ConnectedWriteButton
               write={{
-                chainId: redstoneDevnetL1.id,
+                chainId: holesky.id,
                 address: challengeContract,
                 abi: challengeContractAbi,
                 // TODO: replace with unlock

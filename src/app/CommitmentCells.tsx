@@ -1,11 +1,7 @@
 "use client";
 
-import {
-  Challenge,
-  ChallengeStatus,
-  InputCommitment,
-  secondsPerBlock,
-} from "@/common";
+import { holesky } from "wagmi/chains";
+import { ChallengeStatus, InputCommitment, secondsPerBlock } from "@/common";
 import { ChallengeConfig } from "@/getChallengeConfig";
 import { LabeledCell } from "./LabeledCell";
 import { ShortTimestamp } from "@/ui/ShortTimestamp";
@@ -28,7 +24,9 @@ export function CommitmentCells({
   challengeConfig,
   commitment,
 }: Props) {
-  const blockNumber = useBlockNumber({ watch: true }).data ?? latestBlockNumber;
+  const blockNumber =
+    useBlockNumber({ chainId: holesky.id, watch: true }).data ??
+    latestBlockNumber;
   const challenge = commitment.challenges[0];
   const status = getChallengeStatus(challenge, challengeConfig, blockNumber);
 

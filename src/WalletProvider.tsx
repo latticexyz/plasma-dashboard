@@ -4,11 +4,11 @@ import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { ReactNode } from "react";
 import { configureChains, createConfig, WagmiConfig } from "wagmi";
 import { publicProvider } from "wagmi/providers/public";
-import { redstoneDevnetL2 } from "./chains/redstoneDevnetL2";
-import { redstoneDevnetL1 } from "./chains/redstoneDevnetL1";
+import { holesky } from "./chains/holesky";
+import { holeskyRedstone } from "./chains/holeskyRedstone";
 
 const { chains, publicClient } = configureChains(
-  [redstoneDevnetL2, redstoneDevnetL1],
+  [holesky, holeskyRedstone],
   [publicProvider()]
 );
 

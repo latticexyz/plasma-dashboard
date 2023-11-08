@@ -1,4 +1,4 @@
-import { redstoneDevnetL1 } from "@/chains/redstoneDevnetL1";
+import { holesky } from "wagmi/chains";
 import {
   secondsPerBlock,
   challengeContract,
@@ -54,8 +54,8 @@ export function ChallengeModalContent({
               icon={<ClockIcon />}
               // TODO: move this math into helpers
               label={`${Math.floor(
-                (Number(blocksLeft) * secondsPerBlock) / 60 / 60 / 24
-              )} days`}
+                (Number(blocksLeft) * secondsPerBlock) / 60 / 60
+              )} hours`}
               timestamp={
                 Math.floor(Date.now() / 1000) +
                 Number(blocksLeft) * secondsPerBlock
@@ -78,11 +78,12 @@ export function ChallengeModalContent({
       </p>
       <ConnectedWriteButton
         write={{
-          chainId: redstoneDevnetL1.id,
+          chainId: holesky.id,
           address: challengeContract,
           abi: challengeContractAbi,
           functionName: "challenge",
           args: [commitment.blockNumber, commitment.inputHash],
+          value: challengeConfig.bondSize,
         }}
         label="Deposit & challenge"
       />
