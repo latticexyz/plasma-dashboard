@@ -1,7 +1,7 @@
 import { ChallengeStatusCell } from "@/app/ChallengeStatusCell";
 import { ChallengeStatusIndicator } from "@/app/ChallengeStatusIndicator";
 import { CommitmentBlock } from "@/app/CommitmentBlock";
-import { LabeledCell } from "@/app/LabeledCell";
+import { LabeledBox } from "@/ui/LabeledBox";
 import { TruncatedHex } from "@/ui/TruncatedHex";
 import { getChallengeConfig } from "@/getChallengeConfig";
 import { getChallengeStatus } from "@/getChallengeStatus";
@@ -14,9 +14,6 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { isHex } from "viem";
 import { getBlockNumber } from "viem/actions";
-import { database } from "@/database";
-import { challengesTable } from "@/schema";
-import { and, eq } from "drizzle-orm";
 
 // Force Next.js to always re-render this, otherwise it will cache the fetch for the latest block number, making it quickly stale and affecting the defaults set up deeper in the component tree.
 export const dynamic = "force-dynamic";
@@ -70,42 +67,42 @@ export default async function CommitmentPage({ params }: Props) {
           </div>
           {/* TODO: make these dependent on status */}
           <div className="flex gap-8">
-            <LabeledCell label="Resolved by" className="text-right">
-              <span className="text-white">
+            <LabeledBox label="Resolved by" className="text-right">
+              <span className="font-mono text-white">
                 {latestChallenge ? (
                   <TruncatedHex hex={latestChallenge.txFrom} />
                 ) : (
                   "??"
                 )}
               </span>
-            </LabeledCell>
-            <LabeledCell label="Ended" className="text-right">
-              <span className="text-white">00/00 00:00</span>
-            </LabeledCell>
+            </LabeledBox>
+            <LabeledBox label="Ended" className="text-right">
+              <span className="font-mono text-white">00/00 00:00</span>
+            </LabeledBox>
           </div>
         </div>
 
         <div className="flex gap-8 justify-between items-center px-3 py-6">
           <div className="flex flex-col justify-center gap-3">
             <div className="flex">
-              <div className="flex flex-shrink-0 w-32 gap-1 items-center">
+              <div className="flex flex-shrink-0 w-32 gap-2 items-center">
                 <div className="flex-shrink-0">
                   <SendIcon />
                 </div>
                 <div className="font-mono uppercase text-sm">Sender</div>
               </div>
-              <div className="font-mono uppercase text-sm text-white">
+              <div className="font-mono text-sm text-white">
                 {commitment.txFrom}
               </div>
             </div>
             <div className="flex">
-              <div className="flex flex-shrink-0 w-32 gap-1 items-center">
+              <div className="flex flex-shrink-0 w-32 gap-2 items-center">
                 <div className="flex-shrink-0">
                   <InboxIcon />
                 </div>
                 <div className="font-mono uppercase text-sm">Inbox</div>
               </div>
-              <div className="font-mono uppercase text-sm text-white">
+              <div className="font-mono text-sm text-white">
                 {commitment.txTo}
               </div>
             </div>
@@ -175,10 +172,7 @@ export default async function CommitmentPage({ params }: Props) {
                 })
               ) : (
                 <tr>
-                  <td
-                    colSpan={5}
-                    className="p-3 font-mono uppercase text-sm text-white"
-                  >
+                  <td colSpan={5} className="p-3 text-center">
                     This input commitment has not been challenged.
                   </td>
                 </tr>

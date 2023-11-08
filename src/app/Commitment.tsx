@@ -15,7 +15,7 @@ export function Commitment({
   commitment,
 }: Props) {
   return (
-    <div className="grid grid-cols-6 gap-5 p-3">
+    <div className="grid grid-cols-6 gap-5 p-3 items-center">
       <div className="px-3 py-2 bg-white/10">
         <CommitmentBlock commitment={commitment} />
       </div>

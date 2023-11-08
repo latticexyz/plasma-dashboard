@@ -14,7 +14,7 @@ export function CommitmentAddresses({ commitment }: Props) {
         <div className="flex-shrink-0">
           <SendIcon />
         </div>
-        <div className="font-mono uppercase text-xs text-white">
+        <div className="font-mono text-xs text-white">
           <TruncatedHex hex={commitment.txFrom} />
         </div>
       </div>
@@ -22,7 +22,7 @@ export function CommitmentAddresses({ commitment }: Props) {
         <div className="flex-shrink-0">
           <InboxIcon />
         </div>
-        <div className="font-mono uppercase text-xs text-white">
+        <div className="font-mono text-xs text-white">
           <TruncatedHex hex={commitment.txTo} />
         </div>
       </div>
