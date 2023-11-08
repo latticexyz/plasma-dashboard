@@ -40,7 +40,7 @@ export function ChallengeModalContent({
     >
       <div className="grid grid-cols-2 gap-4">
         <LabeledBox label="Block number">
-          <div className="border border-white/10 px-3 py-1.5">
+          <div className="flex-grow border border-white/10 px-3 py-1.5">
             <TimeBox
               icon={<BlockIcon />}
               label={commitment.blockNumber.toString()}
@@ -49,7 +49,7 @@ export function ChallengeModalContent({
           </div>
         </LabeledBox>
         <LabeledBox label="Challenge window">
-          <div className="border border-white/10 px-3 py-1.5">
+          <div className="flex-grow border border-white/10 px-3 py-1.5">
             <TimeBox
               icon={<ClockIcon />}
               // TODO: move this math into helpers
