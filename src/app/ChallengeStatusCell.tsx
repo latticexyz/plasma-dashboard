@@ -1,6 +1,6 @@
 import { ChallengeStatus } from "@/common";
-import { LabeledCell } from "./LabeledCell";
 import { ChallengeStatusIndicator } from "./ChallengeStatusIndicator";
+import { LabeledBox } from "@/ui/LabeledBox";
 
 type Props = {
   status: ChallengeStatus;
@@ -8,8 +8,8 @@ type Props = {
 
 export function ChallengeStatusCell({ status }: Props) {
   return (
-    <LabeledCell label="Status">
+    <LabeledBox label="Status">
       <ChallengeStatusIndicator status={status} />
-    </LabeledCell>
+    </LabeledBox>
   );
 }

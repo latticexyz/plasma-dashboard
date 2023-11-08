@@ -3,11 +3,11 @@
 import { holesky } from "wagmi/chains";
 import { ChallengeStatus, InputCommitment, secondsPerBlock } from "@/common";
 import { ChallengeConfig } from "@/getChallengeConfig";
-import { LabeledCell } from "./LabeledCell";
+import { LabeledBox } from "@/ui/LabeledBox";
 import { ShortTimestamp } from "@/ui/ShortTimestamp";
 import { getChallengeStatus } from "@/getChallengeStatus";
 import { bigIntMax } from "@latticexyz/common/utils";
-import { TruncatedAddress } from "@/ui/TruncatedAddress";
+import { TruncatedHex } from "@/ui/TruncatedHex";
 import { ChallengeStatusCell } from "./ChallengeStatusCell";
 import { CommitmentAddresses } from "./CommitmentAddresses";
 import { CommitmentButtons } from "./CommitmentButtons";
@@ -39,11 +39,13 @@ export function CommitmentCells({
     return (
       <>
         <ChallengeStatusCell status={status} />
-        <LabeledCell label="Challenge window">
-          <span className="text-white">{blocksLeft.toString()}</span> blocks
-        </LabeledCell>
-        <LabeledCell label="Ends (est.)">
-          <span className="text-white">
+        <LabeledBox label="Challenge window">
+          <span className="font-mono uppercase">
+            <span className="text-white">{blocksLeft.toString()}</span> blocks
+          </span>
+        </LabeledBox>
+        <LabeledBox label="Ends (est.)">
+          <span className="font-mono text-white">
             <ShortTimestamp
               timestamp={
                 Math.floor(Date.now() / 1000) +
@@ -51,7 +53,7 @@ export function CommitmentCells({
               }
             />
           </span>
-        </LabeledCell>
+        </LabeledBox>
         <CommitmentAddresses commitment={commitment} />
         <CommitmentButtons
           blockNumber={blockNumber}
@@ -72,17 +74,19 @@ export function CommitmentCells({
     return (
       <>
         <ChallengeStatusCell status={status} />
-        <LabeledCell label="Resolve window">
-          <span className="text-white">
-            {bigIntMax(0n, blocksLeft).toString()}
-          </span>{" "}
-          blocks
-        </LabeledCell>
-        <LabeledCell label="Ends (est.)">
-          <span className="text-white">
+        <LabeledBox label="Resolve window">
+          <span className="font-mono uppercase">
+            <span className="text-white">
+              {bigIntMax(0n, blocksLeft).toString()}
+            </span>{" "}
+            blocks
+          </span>
+        </LabeledBox>
+        <LabeledBox label="Ends (est.)">
+          <span className="font-mono text-white">
             <ShortTimestamp timestamp={deadline} />
           </span>
-        </LabeledCell>
+        </LabeledBox>
         <CommitmentAddresses commitment={commitment} />
         <CommitmentButtons
           blockNumber={blockNumber}
@@ -98,16 +102,16 @@ export function CommitmentCells({
     return (
       <>
         <ChallengeStatusCell status={status} />
-        <LabeledCell label="Resolved by">
-          <span className="text-white">
-            <TruncatedAddress address={challenge.txFrom} />
+        <LabeledBox label="Resolved by">
+          <span className="font-mono text-white">
+            <TruncatedHex hex={challenge.txFrom} />
           </span>
-        </LabeledCell>
-        <LabeledCell label="Ended">
-          <span className="text-white">
+        </LabeledBox>
+        <LabeledBox label="Ended">
+          <span className="font-mono text-white">
             <ShortTimestamp timestamp={challenge.blockTimestamp} />
           </span>
-        </LabeledCell>
+        </LabeledBox>
         <CommitmentAddresses commitment={commitment} />
         <CommitmentButtons
           blockNumber={blockNumber}
@@ -123,18 +127,18 @@ export function CommitmentCells({
     return (
       <>
         <ChallengeStatusCell status={status} />
-        <LabeledCell label="Resolve window">
-          <span className="text-white">
+        <LabeledBox label="Resolve window">
+          <span className="font-mono uppercase">
             <span className="text-white">0</span> blocks
           </span>
-        </LabeledCell>
-        <LabeledCell
+        </LabeledBox>
+        <LabeledBox
           label={status === ChallengeStatus.Expired ? "Ended" : "Ended (est)."}
         >
-          <span className="text-white">
+          <span className="font-mono text-white">
             <ShortTimestamp timestamp={deadline} />
           </span>
-        </LabeledCell>
+        </LabeledBox>
         <CommitmentAddresses commitment={commitment} />
         <CommitmentButtons
           blockNumber={blockNumber}
@@ -147,21 +151,5 @@ export function CommitmentCells({
   }
 
   // TODO: return something different for an unknown/unspecified status type?
-  return (
-    <>
-      {/* <ChallengeStatusCell status={status} />
-      <LabeledCell label="Challenge window">
-        <span className="text-white">42</span> blocks
-      </LabeledCell>
-      <LabeledCell label="Ends (est.)">
-        <span className="text-white">
-          <ShortTimestamp
-            timestamp={
-              commitment.blockTimestamp + challengeConfig.challengeWindowSeconds
-            }
-          />
-        </span>
-      </LabeledCell> */}
-    </>
-  );
+  return null;
 }

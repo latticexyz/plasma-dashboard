@@ -1,13 +1,18 @@
 "use client";
 
+import { challengeContract } from "@/common";
 import { Button } from "@/ui/Button";
 import { ModalContent } from "@/ui/ModalContent";
+import { TruncatedHex } from "@/ui/TruncatedHex";
 import { UseState } from "@/ui/UseState";
 import { Dialog } from "@radix-ui/react-dialog";
 
 export default function UIPage() {
   return (
     <div className="flex flex-col gap-8 items-start">
+      <div>
+        Truncated hex: <TruncatedHex hex={challengeContract} />
+      </div>
       <div className="flex gap-2 text-sm">
         <Button label="Button" onClick={() => alert("click")} />
         <Button label="Pending" pending onClick={() => alert("click")} />
