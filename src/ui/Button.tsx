@@ -2,11 +2,13 @@ import { PendingIcon } from "@/ui/icons/PendingIcon";
 import { ButtonHTMLAttributes, DetailedHTMLProps, ReactNode } from "react";
 import { twMerge } from "tailwind-merge";
 
-type Props = DetailedHTMLProps<
-  ButtonHTMLAttributes<HTMLButtonElement>,
-  HTMLButtonElement
+type Props = Omit<
+  DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>,
+  "children"
 > & {
   pending?: boolean;
+  label: ReactNode;
+  labelHover?: ReactNode;
 };
 
 export function Button({
@@ -15,7 +17,8 @@ export function Button({
   pending,
   disabled,
   title,
-  children,
+  label,
+  labelHover,
   ...props
 }: Props) {
   return (
@@ -37,11 +40,29 @@ export function Button({
           className={twMerge(
             "row-start-1 col-start-1",
             "transition opacity-100 translate-y-0",
+            labelHover
+              ? "group-hover:opacity-0 group-hover:-translate-y-3"
+              : null,
             "group-aria-[busy=true]:opacity-0 group-aria-[busy=true]:-translate-y-3"
           )}
         >
-          {children}
+          {label}
         </span>
+
+        {labelHover ? (
+          <span
+            aria-hidden
+            className={twMerge(
+              "row-start-1 col-start-1",
+              "transition opacity-0 translate-y-3",
+              "group-hover:opacity-100 group-hover:translate-y-0",
+              "group-aria-[busy=true]:opacity-0 group-aria-[busy=true]:-translate-y-3"
+            )}
+          >
+            {labelHover}
+          </span>
+        ) : null}
+
         <span
           aria-hidden
           className={twMerge(

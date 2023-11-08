@@ -4,7 +4,6 @@ import { Abi } from "viem";
 import { useSwitchNetwork } from "wagmi";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { Button } from "./Button";
-import { HoverLabel } from "./HoverLabel";
 import { WriteButton, type Props as WriteButtonProps } from "./WriteButton";
 
 // TODO: minimum balance condition (both eth and bond)
@@ -24,14 +23,16 @@ export function ConnectedWriteButton<
     <ConnectButton.Custom>
       {({ mounted, account, chain, openConnectModal }) => {
         if (!mounted) {
-          return <Button disabled>{label}</Button>;
+          return <Button label={label} disabled />;
         }
 
         if (!account) {
           return (
-            <Button onClick={openConnectModal}>
-              <HoverLabel label={label} labelHover="Connect wallet" />
-            </Button>
+            <Button
+              label={label}
+              labelHover="Connect wallet"
+              onClick={openConnectModal}
+            />
           );
         }
 
@@ -42,13 +43,15 @@ export function ConnectedWriteButton<
         ) {
           if (switchNetwork) {
             return (
-              <Button onClick={() => switchNetwork(write.chainId)}>
-                <HoverLabel label={label} labelHover="Switch network" />
-              </Button>
+              <Button
+                label={label}
+                labelHover="Switch network"
+                onClick={() => switchNetwork(write.chainId)}
+              />
             );
           } else {
             // TODO: improve the messaging for this state
-            return <Button disabled>Wrong network</Button>;
+            return <Button label="Wrong network" disabled />;
           }
         }
 

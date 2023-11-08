@@ -86,28 +86,25 @@ export function WriteButton<
   // TODO: invalidate cache or otherwise reload tx data
 
   if (prepareResult.isLoading) {
-    return (
-      <Button pending title="Estimating gas…">
-        {label}
-      </Button>
-    );
+    return <Button label={label} pending title="Estimating gas…" />;
   }
 
   if (writeResult.isLoading) {
-    return <Button pending>{label}</Button>;
+    return <Button label={label} pending />;
   }
 
   if (transactionResult.isLoading) {
-    return <Button pending>{label}</Button>;
+    return <Button label={label} pending />;
   }
 
   if (prepareResult.isError) {
     // TODO: display better message for specific kinds of errors (eth balance, etc)
-    return <Button disabled>Could not estimate gas</Button>;
+    return <Button label="Could not estimate gas" disabled />;
   }
 
   return (
     <Button
+      label={label}
       pending={writeResult.isLoading}
       onClick={(event) => {
         event.preventDefault();
@@ -142,8 +139,6 @@ export function WriteButton<
           }
         );
       }}
-    >
-      {label}
-    </Button>
+    />
   );
 }

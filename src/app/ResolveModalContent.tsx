@@ -4,6 +4,7 @@ import {
   challengeContract,
   challengeContractAbi,
   InputCommitment,
+  Challenge,
 } from "@/common";
 import { ChallengeConfig } from "@/getChallengeConfig";
 import { ConnectedWriteButton } from "@/ui/ConnectedWriteButton";
@@ -14,29 +15,43 @@ import { BlockIcon } from "@/ui/icons/BlockIcon";
 import { ClockIcon } from "@/ui/icons/ClockIcon";
 import { bigIntMax } from "@latticexyz/common/utils";
 import Link from "next/link";
-import { formatEther } from "viem";
+import { bytesToHex } from "viem";
+import { useMemo, useState } from "react";
+import { usePromise } from "@/usePromise";
+import { Button } from "@/ui/Button";
 
 type Props = {
   blockNumber: bigint;
   challengeConfig: ChallengeConfig;
   commitment: InputCommitment;
+  challenge: Challenge;
 };
 
-export function ChallengeModalContent({
+export function ResolveModalContent({
   blockNumber,
   challengeConfig,
   commitment,
+  challenge,
 }: Props) {
-  const blocksElapsed = blockNumber - commitment.blockNumber;
+  const [dataUrl, setDataUrl] = useState(
+    // TODO: move endpoint to env var?
+    `https://17001-da.quarry.linfra.xyz/get/${commitment.inputHash}`
+  );
+
+  const dataResult = usePromise(
+    useMemo(() => fetch(dataUrl).then((res) => res.arrayBuffer()), [dataUrl])
+  );
+
+  const blocksElapsed = blockNumber - challenge.blockNumber;
   const blocksLeft = bigIntMax(
     0n,
-    challengeConfig.challengeWindowBlocks - blocksElapsed
+    challengeConfig.resolveWindowBlocks - blocksElapsed
   );
 
   return (
     <ModalContent
-      title="Challenge"
-      description="If data is not retrievable, challenge the the commitment to force the data provider to make the data available, or the network considers the input no longer valid."
+      title="Resolve"
+      description="Prove that you have the data for a challenged block to make sure the transactions included in the block are kept as part of the network state."
     >
       <div className="grid grid-cols-2 gap-4">
         <LabeledBox label="Block number">
@@ -48,7 +63,7 @@ export function ChallengeModalContent({
             />
           </div>
         </LabeledBox>
-        <LabeledBox label="Challenge window">
+        <LabeledBox label="Resolve window">
           <div className="flex-grow border border-white/10 px-3 py-1.5">
             <TimeBox
               icon={<ClockIcon />}
@@ -64,30 +79,40 @@ export function ChallengeModalContent({
           </div>
         </LabeledBox>
       </div>
-      <LabeledBox label="Required bond">
-        {/* TODO: is this meant to be a `readonly` input field? */}
-        <div className="p-4 bg-white/10 flex items-center justify-between">
-          <span className="text-white font-mono uppercase text-lg leading-none">
-            {formatEther(challengeConfig.bondSize)}
-          </span>
-          <span className="font-mono uppercase text-sm leading-none">ETH</span>
-        </div>
+      <LabeledBox label="Data URL">
+        <input
+          type="url"
+          className="p-4 bg-white/10 text-white font-mono leading-none"
+          value={dataUrl}
+          onChange={(event) => setDataUrl(event.currentTarget.value)}
+        />
       </LabeledBox>
       <p className="text-sm">
-        If data is not available for this input commitment, your bond is
-        returned. If the data is proved available, your bond is burned.
+        Provide a link to the input data for the commitment for this block. The
+        input data will be retrieved and validated.
       </p>
-      <ConnectedWriteButton
-        label="Challenge"
-        write={{
-          chainId: holesky.id,
-          address: challengeContract,
-          abi: challengeContractAbi,
-          functionName: "challenge",
-          args: [commitment.blockNumber, commitment.inputHash],
-          value: challengeConfig.bondSize,
-        }}
-      />
+      {dataResult.status === "pending" || dataResult.status === "idle" ? (
+        <Button label="Resolve challenge" pending />
+      ) : dataResult.status === "rejected" ? (
+        // TODO: show more info about why this failed
+        <Button label="Could not fetch data" disabled />
+      ) : (
+        <ConnectedWriteButton
+          label="Resolve challenge"
+          // TODO: be able to set pending/error here or some prerequisite promise
+          write={{
+            chainId: holesky.id,
+            address: challengeContract,
+            abi: challengeContractAbi,
+            functionName: "resolve",
+            args: [
+              commitment.blockNumber,
+              commitment.inputHash,
+              bytesToHex(new Uint8Array(dataResult.value)),
+            ],
+          }}
+        />
+      )}
       <div className="flex gap-2 items-center">
         <div className="font-mono uppercase text-sm">
           Not sure what this is?

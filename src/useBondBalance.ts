@@ -1,13 +1,13 @@
 import { useAccount, useContractRead } from "wagmi";
+import { holesky } from "wagmi/chains";
 import { challengeContract, challengeContractAbi } from "./common";
-import { redstoneDevnetL1 } from "./chains/redstoneDevnetL1";
 
 export function useBondBalance() {
   const { address } = useAccount();
   return useContractRead({
     enabled: !!address,
     watch: true,
-    chainId: redstoneDevnetL1.id,
+    chainId: holesky.id,
     address: challengeContract,
     abi: challengeContractAbi,
     functionName: "balances",

@@ -9,36 +9,38 @@ export default function UIPage() {
   return (
     <div className="flex flex-col gap-8 items-start">
       <div className="flex gap-2 text-sm">
-        <Button onClick={() => alert("click")}>Button</Button>
-        <Button pending onClick={() => alert("click")}>
-          Pending
-        </Button>
-        <Button disabled onClick={() => alert("click")}>
-          Disabled
-        </Button>
+        <Button label="Button" onClick={() => alert("click")} />
+        <Button label="Pending" pending onClick={() => alert("click")} />
+        <Button label="Disabled" disabled onClick={() => alert("click")} />
       </div>
       <div className="flex gap-2 items-center">
         <span className="text-xs">
-          <Button>text-xs</Button>
+          <Button label="text-xs" />
         </span>
         <span className="text-sm">
-          <Button>text-sm</Button>
+          <Button label="text-sm" />
         </span>
-        <Button className="text-base">text-base</Button>
+        <Button label="text-base" />
       </div>
       <div className="flex gap-2 text-sm">
         <UseState initialState={false}>
           {([pending, setPending]) => (
-            <Button pending={pending} onClick={() => setPending(!pending)}>
-              Toggle pending
-            </Button>
+            <Button
+              label="Pending"
+              labelHover="Toggle pending"
+              pending={pending}
+              onClick={() => setPending(!pending)}
+            />
           )}
         </UseState>
         <UseState initialState={false}>
           {([disabled, setDisabled]) => (
-            <Button disabled={disabled} onClick={() => setDisabled(!disabled)}>
-              Toggle disabled
-            </Button>
+            <Button
+              label="Disabled"
+              labelHover="Toggle disabled"
+              disabled={disabled}
+              onClick={() => setDisabled(!disabled)}
+            />
           )}
         </UseState>
       </div>
@@ -49,9 +51,9 @@ export default function UIPage() {
             description="This is a modal. There are many like it, but this one is mine."
           >
             <p>Hello modal!</p>
-            <Button>Action</Button>
-            <Button pending>Pending</Button>
-            <Button disabled>Disabled</Button>
+            <Button label="Action" />
+            <Button label="Pending" pending />
+            <Button label="Disabled" disabled />
           </ModalContent>
         </Dialog>
       </div>

@@ -52,3 +52,19 @@ CHALLENGE_BLOCK=<current block number>
 ```
 make challenge
 ```
+
+### Generate ABIs
+
+```
+git clone https://github.com/latticexyz/redstone.git
+cd redstone/packages/contracts-bedrock
+forge clean
+forge build --extra-output-files abi
+pnpx @latticexyz/abi-ts
+```
+
+then copy ABIs
+
+```
+cp ../redstone/packages/contracts-bedrock/forge-artifacts/DataAvailabilityChallenge.sol/DataAvailabilityChallenge.abi.json* src/abi
+```

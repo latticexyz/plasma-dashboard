@@ -1,16 +1,10 @@
-import {
-  InputCommitment,
-  ChallengeStatus,
-  challengeContractAbi,
-  challengeContract,
-} from "@/common";
+import { InputCommitment, ChallengeStatus } from "@/common";
 import { TerminalIcon } from "@/ui/icons/TerminalIcon";
 import { ChallengeConfig } from "@/getChallengeConfig";
-import { redstoneDevnetL1 } from "@/chains/redstoneDevnetL1";
-import { ConnectedWriteButton } from "@/ui/ConnectedWriteButton";
 import { Modal } from "@/ui/Modal";
 import { ChallengeModalContent } from "./ChallengeModalContent";
-import { ModalContent } from "@/ui/ModalContent";
+import { ResolveModalContent } from "./ResolveModalContent";
+import { UnlockBondModalContent } from "./UnlockBondModalContent";
 
 type Props = {
   blockNumber: bigint;
@@ -47,7 +41,9 @@ export function CommitmentButton({
     );
   }
 
-  if (status === ChallengeStatus.Challenged) {
+  const challenge = commitment.challenges[0];
+  // TODO: some state for challenged status but no challenge
+  if (status === ChallengeStatus.Challenged && challenge) {
     return (
       <Modal
         trigger={
@@ -60,24 +56,12 @@ export function CommitmentButton({
           </button>
         }
       >
-        <ModalContent
-          title="Resolve"
-          description="Prove that you have the data for a challenged block to make sure the transactions included in the block are kept as part of the network state."
-        >
-          <div className="text-sm">
-            <ConnectedWriteButton
-              write={{
-                chainId: redstoneDevnetL1.id,
-                address: challengeContract,
-                abi: challengeContractAbi,
-                functionName: "resolve",
-                // TODO: get input data from somewhere
-                args: [commitment.blockNumber, "0x"],
-              }}
-              label="Resolve"
-            />
-          </div>
-        </ModalContent>
+        <ResolveModalContent
+          blockNumber={blockNumber}
+          challengeConfig={challengeConfig}
+          commitment={commitment}
+          challenge={challenge}
+        />
       </Modal>
     );
   }
@@ -91,27 +75,11 @@ export function CommitmentButton({
             className="flex-grow flex items-center px-3 py-2 gap-2 bg-white text-black"
           >
             <TerminalIcon />
-            <span className="font-mono uppercase text-xs">Withdraw</span>
+            <span className="font-mono uppercase text-xs">Unlock bond</span>
           </button>
         }
       >
-        <ModalContent
-          title="Unblock bond"
-          description="Since the data was not made available for this input commitment, or the challenge expired, your bond has now been made claimable."
-        >
-          <div className="text-sm">
-            <ConnectedWriteButton
-              write={{
-                chainId: redstoneDevnetL1.id,
-                address: challengeContract,
-                abi: challengeContractAbi,
-                // TODO: replace with unlock
-                functionName: "withdraw",
-              }}
-              label="Unlock bond"
-            />
-          </div>
-        </ModalContent>
+        <UnlockBondModalContent commitment={commitment} />
       </Modal>
     );
   }
