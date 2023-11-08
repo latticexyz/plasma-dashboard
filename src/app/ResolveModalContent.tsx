@@ -15,7 +15,7 @@ import { BlockIcon } from "@/ui/icons/BlockIcon";
 import { ClockIcon } from "@/ui/icons/ClockIcon";
 import { bigIntMax } from "@latticexyz/common/utils";
 import Link from "next/link";
-import { stringToHex } from "viem";
+import { bytesToHex } from "viem";
 import { useMemo, useState } from "react";
 import { usePromise } from "@/usePromise";
 import { Button } from "@/ui/Button";
@@ -39,7 +39,7 @@ export function ResolveModalContent({
   );
 
   const dataResult = usePromise(
-    useMemo(() => fetch(dataUrl).then((res) => res.text()), [dataUrl])
+    useMemo(() => fetch(dataUrl).then((res) => res.arrayBuffer()), [dataUrl])
   );
 
   const blocksElapsed = blockNumber - challenge.blockNumber;
@@ -108,7 +108,7 @@ export function ResolveModalContent({
             args: [
               commitment.blockNumber,
               commitment.inputHash,
-              stringToHex(dataResult.value),
+              bytesToHex(new Uint8Array(dataResult.value)),
             ],
           }}
         />
