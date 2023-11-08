@@ -14,6 +14,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { isHex } from "viem";
 import { getBlockNumber } from "viem/actions";
+import { holesky } from "@/chains/holesky";
+import { getInputDataUrl } from "@/getInputDataUrl";
 
 // Force Next.js to always re-render this, otherwise it will cache the fetch for the latest block number, making it quickly stale and affecting the defaults set up deeper in the component tree.
 export const dynamic = "force-dynamic";
@@ -66,8 +68,8 @@ export default async function CommitmentPage({ params }: Props) {
             <ChallengeStatusCell status={status} />
           </div>
           {/* TODO: make these dependent on status */}
-          <div className="flex gap-8">
-            <LabeledBox label="Resolved by" className="text-right">
+          <div className="flex gap-8 text-right">
+            <LabeledBox label="Resolved by">
               <span className="font-mono text-white">
                 {latestChallenge ? (
                   <TruncatedHex hex={latestChallenge.txFrom} />
@@ -76,7 +78,7 @@ export default async function CommitmentPage({ params }: Props) {
                 )}
               </span>
             </LabeledBox>
-            <LabeledBox label="Ended" className="text-right">
+            <LabeledBox label="Ended">
               <span className="font-mono text-white">00/00 00:00</span>
             </LabeledBox>
           </div>
@@ -109,16 +111,18 @@ export default async function CommitmentPage({ params }: Props) {
           </div>
           <div className="flex-grow flex gap-2 justify-end">
             <Link
-              // TODO: link to block explorer
-              href={`#${commitment.txHash}`}
+              href={`${holesky.blockExplorers.default.url}/tx/${commitment.txHash}`}
               className="flex-shrink-0 px-4 py-2 bg-white text-black font-mono uppercase text-sm"
+              target="_blank"
+              rel="noopener noreferer"
             >
               View tx
             </Link>
             <Link
-              // TODO: link to input data on S3
-              href={`#${commitment.inputHash}`}
+              href={getInputDataUrl(commitment.inputHash)}
               className="flex-shrink-0 px-4 py-2 bg-white/20 text-white font-mono uppercase text-sm"
+              target="_blank"
+              rel="noopener noreferer"
             >
               Data
             </Link>

@@ -19,6 +19,7 @@ import { bytesToHex } from "viem";
 import { useMemo, useState } from "react";
 import { usePromise } from "@/usePromise";
 import { Button } from "@/ui/Button";
+import { getInputDataUrl } from "@/getInputDataUrl";
 
 type Props = {
   blockNumber: bigint;
@@ -33,10 +34,7 @@ export function ResolveModalContent({
   commitment,
   challenge,
 }: Props) {
-  const [dataUrl, setDataUrl] = useState(
-    // TODO: move endpoint to env var?
-    `https://17001-da.quarry.linfra.xyz/get/${commitment.inputHash}`
-  );
+  const [dataUrl, setDataUrl] = useState(getInputDataUrl(commitment.inputHash));
 
   const dataResult = usePromise(
     useMemo(() => fetch(dataUrl).then((res) => res.arrayBuffer()), [dataUrl])
