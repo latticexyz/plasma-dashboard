@@ -1,14 +1,18 @@
 "use server";
 
-import { InputCommitment } from "@/common";
+import { Challenge, InputCommitment } from "@/common";
 import { database } from "@/database";
 import { Hex } from "viem";
 
 export async function getCommitment(
   inputHash: Hex
-): Promise<InputCommitment | undefined> {
-  return await database.query.inputCommitments.findFirst({
+): Promise<
+  | (Omit<InputCommitment, "latestChallenge"> & { challenges: Challenge[] })
+  | undefined
+> {
+  return await database.query.inputCommitmentsTable.findFirst({
     columns: {
+      chainId: true,
       blockNumber: true,
       blockTimestamp: true,
       inputHash: true,
@@ -19,6 +23,7 @@ export async function getCommitment(
     with: {
       challenges: {
         columns: {
+          chainId: true,
           blockNumber: true,
           blockTimestamp: true,
           txHash: true,

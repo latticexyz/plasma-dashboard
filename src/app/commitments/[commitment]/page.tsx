@@ -18,6 +18,9 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { isHex } from "viem";
 import { getBlockNumber } from "viem/actions";
+import { database } from "@/database";
+import { challengesTable } from "@/schema";
+import { and, eq } from "drizzle-orm";
 
 // Force Next.js to always re-render this, otherwise it will cache the fetch for the latest block number, making it quickly stale and affecting the defaults set up deeper in the component tree.
 export const dynamic = "force-dynamic";
@@ -39,9 +42,10 @@ export default async function CommitmentPage({ params }: Props) {
     getChallengeConfig(client),
   ]);
 
-  const challenge = commitment.challenge;
+  const latestChallenge = commitment.challenges[0] ?? null;
+
   const status = getChallengeStatus(
-    challenge,
+    latestChallenge,
     challengeConfig,
     latestBlockNumber
   );
@@ -72,8 +76,8 @@ export default async function CommitmentPage({ params }: Props) {
           <div className="flex gap-8">
             <LabeledCell label="Resolved by" className="text-right">
               <span className="text-white">
-                {challenge ? (
-                  <TruncatedAddress address={challenge.txFrom} />
+                {latestChallenge ? (
+                  <TruncatedAddress address={latestChallenge.txFrom} />
                 ) : (
                   "??"
                 )}
@@ -147,7 +151,7 @@ export default async function CommitmentPage({ params }: Props) {
               </tr>
             </thead>
 
-            {/* <tbody>
+            <tbody>
               {commitment.challenges.length ? (
                 commitment.challenges.map((challenge) => {
                   const status = getChallengeStatus(
@@ -183,7 +187,7 @@ export default async function CommitmentPage({ params }: Props) {
                   </td>
                 </tr>
               )}
-            </tbody> */}
+            </tbody>
           </table>
         </div>
       </div>

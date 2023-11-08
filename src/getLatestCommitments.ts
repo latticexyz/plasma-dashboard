@@ -20,19 +20,19 @@ import {
   getTableColumns,
 } from "drizzle-orm";
 import { Address } from "viem";
-import { challenges, inputCommitments } from "./schema";
+import { challengesTable, inputCommitmentsTable } from "./schema";
 import { ChallengeConfig } from "./getChallengeConfig";
 
 const latestChallenges = database.$with("latestChallenges").as(
   database
     .select({
-      ...getTableColumns(challenges),
+      ...getTableColumns(challengesTable),
       rowNumber:
         sql<number>`ROW_NUMBER() OVER (PARTITION BY chain_id, challenged_block_num, challenged_hash ORDER BY block_num DESC)`.as(
           "rowNumber"
         ),
     })
-    .from(challenges)
+    .from(challengesTable)
 );
 
 export type CommitmentsFilter = {
@@ -48,14 +48,14 @@ export async function getLatestCommitments(
   filter: CommitmentsFilter
 ): Promise<InputCommitment[]> {
   const conditions: (SQLWrapper | undefined)[] = [
-    eq(inputCommitments.txFrom, batcher),
-    eq(inputCommitments.txTo, batcherInbox),
+    eq(inputCommitmentsTable.txFrom, batcher),
+    eq(inputCommitmentsTable.txTo, batcherInbox),
   ];
   if (filter.fromBlock != null) {
-    conditions.push(gte(inputCommitments.blockNumber, filter.fromBlock));
+    conditions.push(gte(inputCommitmentsTable.blockNumber, filter.fromBlock));
   }
   if (filter.toBlock != null) {
-    conditions.push(lte(inputCommitments.blockNumber, filter.toBlock));
+    conditions.push(lte(inputCommitmentsTable.blockNumber, filter.toBlock));
   }
   if (filter.from != null) {
     conditions.push(eq(latestChallenges.txFrom, filter.from));
@@ -91,26 +91,26 @@ export async function getLatestCommitments(
   const rows = await database
     .with(latestChallenges)
     .select()
-    .from(inputCommitments)
+    .from(inputCommitmentsTable)
     .leftJoin(
       latestChallenges,
       and(
-        eq(latestChallenges.chainId, inputCommitments.chainId),
+        eq(latestChallenges.chainId, inputCommitmentsTable.chainId),
         eq(
           latestChallenges.challengedBlockNumber,
-          inputCommitments.blockNumber
+          inputCommitmentsTable.blockNumber
         ),
-        eq(latestChallenges.challengedHash, inputCommitments.inputHash),
+        eq(latestChallenges.challengedHash, inputCommitmentsTable.inputHash),
         eq(latestChallenges.rowNumber, 1)
       )
     )
     .where(and(...conditions))
-    .orderBy(desc(inputCommitments.blockNumber))
+    .orderBy(desc(inputCommitmentsTable.blockNumber))
     .limit(100);
 
   const commitments = rows.map(({ inputCommitments, latestChallenges }) => ({
     ...inputCommitments,
-    challenge: latestChallenges,
+    latestChallenge: latestChallenges,
   }));
 
   return commitments;
