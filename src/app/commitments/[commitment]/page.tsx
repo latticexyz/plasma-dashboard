@@ -1,16 +1,12 @@
 import { ChallengeStatusCell } from "@/app/ChallengeStatusCell";
-import { ChallengeStatusIcon } from "@/app/ChallengeStatusIcon";
 import { ChallengeStatusIndicator } from "@/app/ChallengeStatusIndicator";
-import { ChallengeStatusLabel } from "@/app/ChallengeStatusLabel";
 import { CommitmentBlock } from "@/app/CommitmentBlock";
 import { LabeledCell } from "@/app/LabeledCell";
-import { TruncatedAddress } from "@/ui/TruncatedAddress";
-import { Challenge } from "@/common";
+import { TruncatedHex } from "@/ui/TruncatedHex";
 import { getChallengeConfig } from "@/getChallengeConfig";
 import { getChallengeStatus } from "@/getChallengeStatus";
 import { getCommitment } from "@/getCommitment";
 import { ArrowLeftIcon } from "@/ui/icons/ArrowLeftIcon";
-import { ArrowRightIcon } from "@/ui/icons/ArrowRightIcon";
 import { InboxIcon } from "@/ui/icons/InboxIcon";
 import { SendIcon } from "@/ui/icons/SendIcon";
 import { client } from "@/viemClient";
@@ -77,7 +73,7 @@ export default async function CommitmentPage({ params }: Props) {
             <LabeledCell label="Resolved by" className="text-right">
               <span className="text-white">
                 {latestChallenge ? (
-                  <TruncatedAddress address={latestChallenge.txFrom} />
+                  <TruncatedHex hex={latestChallenge.txFrom} />
                 ) : (
                   "??"
                 )}
@@ -165,13 +161,13 @@ export default async function CommitmentPage({ params }: Props) {
                         <ChallengeStatusIndicator status={status} />
                       </td>
                       <td className="p-3 font-mono uppercase text-sm text-white">
-                        <TruncatedAddress address={challenge.txFrom} />
+                        <TruncatedHex hex={challenge.txFrom} />
                       </td>
                       <td className="p-3 font-mono uppercase text-sm text-white">
                         TODO window
                       </td>
                       <td className="p-3 font-mono uppercase text-sm text-white">
-                        <TruncatedAddress address={challenge.txHash} />
+                        <TruncatedHex hex={challenge.txHash} />
                       </td>
                       <td>TODO time ago</td>
                     </tr>

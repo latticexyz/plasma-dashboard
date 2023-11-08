@@ -7,7 +7,7 @@ import { LabeledCell } from "./LabeledCell";
 import { ShortTimestamp } from "@/ui/ShortTimestamp";
 import { getChallengeStatus } from "@/getChallengeStatus";
 import { bigIntMax } from "@latticexyz/common/utils";
-import { TruncatedAddress } from "@/ui/TruncatedAddress";
+import { TruncatedHex } from "@/ui/TruncatedHex";
 import { ChallengeStatusCell } from "./ChallengeStatusCell";
 import { CommitmentAddresses } from "./CommitmentAddresses";
 import { CommitmentButtons } from "./CommitmentButtons";
@@ -100,7 +100,7 @@ export function CommitmentCells({
         <ChallengeStatusCell status={status} />
         <LabeledCell label="Resolved by">
           <span className="text-white">
-            <TruncatedAddress address={challenge.txFrom} />
+            <TruncatedHex hex={challenge.txFrom} />
           </span>
         </LabeledCell>
         <LabeledCell label="Ended">

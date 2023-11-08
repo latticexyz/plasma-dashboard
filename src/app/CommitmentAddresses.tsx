@@ -1,7 +1,7 @@
 import { InputCommitment } from "@/common";
 import { SendIcon } from "@/ui/icons/SendIcon";
 import { InboxIcon } from "@/ui/icons/InboxIcon";
-import { TruncatedAddress } from "@/ui/TruncatedAddress";
+import { TruncatedHex } from "@/ui/TruncatedHex";
 
 type Props = {
   commitment: InputCommitment;
@@ -15,7 +15,7 @@ export function CommitmentAddresses({ commitment }: Props) {
           <SendIcon />
         </div>
         <div className="font-mono uppercase text-xs text-white">
-          <TruncatedAddress address={commitment.txFrom} />
+          <TruncatedHex hex={commitment.txFrom} />
         </div>
       </div>
       <div className="flex gap-2 items-center">
@@ -23,7 +23,7 @@ export function CommitmentAddresses({ commitment }: Props) {
           <InboxIcon />
         </div>
         <div className="font-mono uppercase text-xs text-white">
-          <TruncatedAddress address={commitment.txTo} />
+          <TruncatedHex hex={commitment.txTo} />
         </div>
       </div>
     </div>
