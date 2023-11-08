@@ -28,24 +28,6 @@ export function CommitmentButton({
   commitment,
   status,
 }: Props) {
-  return (
-    <Modal
-      trigger={
-        <button
-          type="button"
-          className="flex-grow flex items-center px-3 py-2 gap-2 bg-white text-black"
-        >
-          <TerminalIcon />
-          <span className="font-mono uppercase text-xs whitespace-nowrap">
-            Unlock bond
-          </span>
-        </button>
-      }
-    >
-      <UnlockBondModalContent commitment={commitment} />
-    </Modal>
-  );
-
   if (status === ChallengeStatus.Unchallenged) {
     return (
       <Modal
