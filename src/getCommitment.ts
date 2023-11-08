@@ -5,7 +5,7 @@ import { database } from "@/database";
 import { Hex } from "viem";
 
 export async function getCommitment(
-  txHash: Hex
+  inputHash: Hex
 ): Promise<InputCommitment | undefined> {
   return await database.query.inputCommitments.findFirst({
     columns: {
@@ -29,6 +29,6 @@ export async function getCommitment(
         orderBy: (challenge, { desc }) => [desc(challenge.blockNumber)],
       },
     },
-    where: (table, { eq }) => eq(table.txHash, txHash),
+    where: (table, { eq }) => eq(table.inputHash, inputHash),
   });
 }

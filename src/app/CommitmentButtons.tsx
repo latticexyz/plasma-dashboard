@@ -27,7 +27,7 @@ export function CommitmentButtons({
           status={status}
         />
         <Link
-          href={`/commitments/${commitment.txHash}`}
+          href={`/commitments/${commitment.inputHash}`}
           className="flex-shrink-0 px-3 py-2 bg-white/20 text-white"
         >
           <ArrowRightIcon />
