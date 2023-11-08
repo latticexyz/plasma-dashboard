@@ -41,7 +41,7 @@ export function CommitmentButton({
     );
   }
 
-  const challenge = commitment.challenges[0];
+  const challenge = commitment.challenge;
   // TODO: some state for challenged status but no challenge
   if (status === ChallengeStatus.Challenged && challenge) {
     return (

@@ -18,7 +18,7 @@ export type InputCommitment = {
   txFrom: Address;
   txTo: Address;
   inputHash: Hex;
-  challenges: Challenge[];
+  challenge: Challenge | null;
 };
 
 export enum ChallengeStatus {

@@ -7,11 +7,33 @@ import {
   batcherInbox,
 } from "@/common";
 import { database } from "@/database";
-import { SQLWrapper, and, desc, eq, gte, isNull, lt, lte } from "drizzle-orm";
+import {
+  SQLWrapper,
+  and,
+  desc,
+  eq,
+  gte,
+  isNull,
+  lt,
+  lte,
+  sql,
+  getTableColumns,
+} from "drizzle-orm";
 import { Address } from "viem";
 import { challenges, inputCommitments } from "./schema";
-import { isNotNull, uniqueBy } from "@latticexyz/common/utils";
 import { ChallengeConfig } from "./getChallengeConfig";
+
+const latestChallenges = database.$with("latestChallenges").as(
+  database
+    .select({
+      ...getTableColumns(challenges),
+      rowNumber:
+        sql<number>`ROW_NUMBER() OVER (PARTITION BY chain_id, challenged_block_num, challenged_hash ORDER BY block_num DESC)`.as(
+          "rowNumber"
+        ),
+    })
+    .from(challenges)
+);
 
 export type CommitmentsFilter = {
   latestBlockNumber: bigint;
@@ -36,18 +58,18 @@ export async function getLatestCommitments(
     conditions.push(lte(inputCommitments.blockNumber, filter.toBlock));
   }
   if (filter.from != null) {
-    conditions.push(eq(challenges.txFrom, filter.from));
+    conditions.push(eq(latestChallenges.txFrom, filter.from));
   }
 
   // TODO: redo challenged/expired status to have a block number range check
   if (filter.status === ChallengeStatus.Unchallenged) {
-    conditions.push(isNull(challenges.status));
+    conditions.push(isNull(latestChallenges.status));
   } else if (filter.status === ChallengeStatus.Challenged) {
     conditions.push(
       and(
-        eq(challenges.status, 1),
+        eq(latestChallenges.status, 1),
         gte(
-          challenges.blockNumber,
+          latestChallenges.blockNumber,
           filter.latestBlockNumber - filter.challengeConfig.resolveWindowBlocks
         )
       )
@@ -55,51 +77,40 @@ export async function getLatestCommitments(
   } else if (filter.status === ChallengeStatus.Expired) {
     conditions.push(
       and(
-        eq(challenges.status, 1),
+        eq(latestChallenges.status, 1),
         lt(
-          challenges.blockNumber,
+          latestChallenges.blockNumber,
           filter.latestBlockNumber - filter.challengeConfig.resolveWindowBlocks
         )
       )
     );
   } else if (filter.status === ChallengeStatus.Resolved) {
-    conditions.push(eq(challenges.status, 2));
+    conditions.push(eq(latestChallenges.status, 2));
   }
 
   const rows = await database
+    .with(latestChallenges)
     .select()
     .from(inputCommitments)
-    .fullJoin(
-      challenges,
+    .leftJoin(
+      latestChallenges,
       and(
-        eq(challenges.chainId, inputCommitments.chainId),
-        eq(challenges.challengedBlockNumber, inputCommitments.blockNumber),
-        eq(challenges.challengedHash, inputCommitments.inputHash)
+        eq(latestChallenges.chainId, inputCommitments.chainId),
+        eq(
+          latestChallenges.challengedBlockNumber,
+          inputCommitments.blockNumber
+        ),
+        eq(latestChallenges.challengedHash, inputCommitments.inputHash),
+        eq(latestChallenges.rowNumber, 1)
       )
     )
     .where(and(...conditions))
     .orderBy(desc(inputCommitments.blockNumber))
     .limit(100);
 
-  const commitments = uniqueBy(
-    rows.map((row) => row.inputCommitments).filter(isNotNull),
-    (commitment) =>
-      JSON.stringify({
-        chainId: commitment.chainId,
-        blockNumber: commitment.blockNumber.toString(),
-        inputHash: commitment.inputHash,
-      })
-  ).map((commitment) => ({
-    ...commitment,
-    challenges: rows
-      .map((row) => row.challenges)
-      .filter(isNotNull)
-      .filter(
-        (challenge) =>
-          challenge.chainId === commitment.chainId &&
-          challenge.challengedBlockNumber === commitment.blockNumber &&
-          challenge.challengedHash === commitment.inputHash
-      ),
+  const commitments = rows.map(({ inputCommitments, latestChallenges }) => ({
+    ...inputCommitments,
+    challenge: latestChallenges,
   }));
 
   return commitments;

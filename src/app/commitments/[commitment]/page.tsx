@@ -39,12 +39,15 @@ export default async function CommitmentPage({ params }: Props) {
     getChallengeConfig(client),
   ]);
 
-  const challenge = commitment.challenges[0];
+  const challenge = commitment.challenge;
   const status = getChallengeStatus(
     challenge,
     challengeConfig,
     latestBlockNumber
   );
+
+  // TODO: fetch all challenge states
+  // TODO: add a "fake" state between challenged and resolved/expired?
 
   return (
     <div className="space-y-8">
@@ -144,7 +147,7 @@ export default async function CommitmentPage({ params }: Props) {
               </tr>
             </thead>
 
-            <tbody>
+            {/* <tbody>
               {commitment.challenges.length ? (
                 commitment.challenges.map((challenge) => {
                   const status = getChallengeStatus(
@@ -180,7 +183,7 @@ export default async function CommitmentPage({ params }: Props) {
                   </td>
                 </tr>
               )}
-            </tbody>
+            </tbody> */}
           </table>
         </div>
       </div>
