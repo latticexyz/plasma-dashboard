@@ -21,5 +21,15 @@ export const holesky = {
       blockCreated: 77,
     },
   },
+  blockExplorers: {
+    default: {
+      name: "Etherscan",
+      url: "https://holesky.etherscan.io",
+    },
+    etherscan: {
+      name: "Etherscan",
+      url: "https://holesky.etherscan.io",
+    },
+  },
   testnet: true,
 } as const satisfies Chain;
