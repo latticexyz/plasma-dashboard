@@ -8,6 +8,7 @@ import { ChallengeConfig } from "@/getChallengeConfig";
 import { Commitment } from "./Commitment";
 import { useEffect, useState } from "react";
 import { PendingIcon } from "@/ui/icons/PendingIcon";
+import { useAccount } from "wagmi";
 
 type Props = {
   latestBlockNumber: bigint;
@@ -22,6 +23,7 @@ export function Commitments({
   challengeConfig,
   commitments,
 }: Props) {
+  const { address } = useAccount();
   const [isPending, setPending] = useState(false);
 
   useEffect(() => {
@@ -75,7 +77,7 @@ export function Commitments({
             name="from"
             type="text"
             className="bg-white/10 border border-white/20 text-white placeholder:text-white/30 font-mono px-3 py-2 w-64"
-            placeholder={batcher}
+            placeholder={address ?? batcher}
           />
         </label>
         <button type="submit" className="hidden">
