@@ -1,17 +1,8 @@
-import { holesky } from "wagmi/chains";
-import {
-  InputCommitment,
-  ChallengeStatus,
-  challengeContractAbi,
-  challengeContract,
-  secondsPerBlock,
-} from "@/common";
+import { InputCommitment, ChallengeStatus } from "@/common";
 import { TerminalIcon } from "@/ui/icons/TerminalIcon";
 import { ChallengeConfig } from "@/getChallengeConfig";
-import { ConnectedWriteButton } from "@/ui/ConnectedWriteButton";
 import { Modal } from "@/ui/Modal";
 import { ChallengeModalContent } from "./ChallengeModalContent";
-import { ModalContent } from "@/ui/ModalContent";
 import { ResolveModalContent } from "./ResolveModalContent";
 import { UnlockBondModalContent } from "./UnlockBondModalContent";
 
