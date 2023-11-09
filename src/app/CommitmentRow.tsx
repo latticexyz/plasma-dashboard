@@ -1,9 +1,10 @@
 "use client";
 
+import Link from "next/link";
+import { useBlockNumber } from "wagmi";
 import { InputCommitment } from "@/common";
 import { ChallengeConfig } from "@/getChallengeConfig";
 import { CommitmentBlock } from "./CommitmentBlock";
-import { useBlockNumber } from "wagmi";
 import { holesky } from "@/chains/holesky";
 import { getChallengeStatus } from "@/getChallengeStatus";
 import { ChallengeDetailCells } from "./ChallengeDetailCells";
@@ -11,7 +12,6 @@ import { ChallengeStatusCell } from "./ChallengeStatusCell";
 import { CommitmentAddresses } from "./CommitmentAddresses";
 import { CommitmentButton } from "./CommitmentButton";
 import { TertiaryButtonLink } from "@/ui/TertiaryButtonLink";
-import Link from "next/link";
 import { ArrowRightIcon } from "@/ui/icons/ArrowRightIcon";
 
 type Props = {

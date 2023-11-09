@@ -206,7 +206,7 @@ export default async function CommitmentPage({ params }: Props) {
                 })
               ) : (
                 <tr>
-                  <td colSpan={5} className="p-4 text-center">
+                  <td colSpan={5} className="p-8 text-center">
                     This input commitment has not been challenged.
                   </td>
                 </tr>

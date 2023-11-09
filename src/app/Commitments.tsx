@@ -1,5 +1,6 @@
 "use client";
 
+import superjson from "superjson";
 import { ChallengeStatus, InputCommitment, batcher } from "@/common";
 import { FilterForm } from "@/ui/FilterForm";
 import { FilterInput } from "@/ui/FilterInput";
@@ -8,12 +9,16 @@ import { ChallengeConfig } from "@/getChallengeConfig";
 import { CommitmentRow } from "./CommitmentRow";
 import { useEffect, useState } from "react";
 import { PendingIcon } from "@/ui/icons/PendingIcon";
-import { useAccount } from "wagmi";
+import { useAccount, useBlockNumber } from "wagmi";
+import { holesky } from "@/chains/holesky";
+import { CommitmentsFilter } from "@/getLatestCommitments";
+import { commitmentsFilterToSearchParams } from "@/commitmentsFilterToSearchParams";
 
 type Props = {
   latestBlockNumber: bigint;
   challengeConfig: ChallengeConfig;
   commitments: InputCommitment[];
+  filter: CommitmentsFilter;
 };
 
 // TODO: try to normalize sizing of select vs input (https://twitter.com/frolic/status/1717561249154662516)
@@ -21,10 +26,25 @@ type Props = {
 export function Commitments({
   latestBlockNumber,
   challengeConfig,
-  commitments,
+  commitments: initialCommitments,
+  filter,
 }: Props) {
   const { address } = useAccount();
   const [isPending, setPending] = useState(false);
+
+  const blockNumber =
+    useBlockNumber({ chainId: holesky.id, watch: true }).data ??
+    latestBlockNumber;
+
+  const [commitments, setCommitments] = useState(initialCommitments);
+  useEffect(() => {
+    fetch(
+      `/api/commitments?${commitmentsFilterToSearchParams(filter).toString()}`
+    )
+      .then((res) => res.json())
+      .then((json) => superjson.deserialize(json))
+      .then((json: any) => setCommitments(json.commitments));
+  }, [blockNumber]);
 
   useEffect(() => {
     setPending(false);
