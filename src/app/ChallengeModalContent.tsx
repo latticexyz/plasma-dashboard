@@ -4,6 +4,7 @@ import {
   challengeContract,
   challengeContractAbi,
   InputCommitment,
+  learnMoreUrl,
 } from "@/common";
 import { ChallengeConfig } from "@/getChallengeConfig";
 import { ConnectedWriteButton } from "@/ui/ConnectedWriteButton";
@@ -95,13 +96,13 @@ export function ChallengeModalContent({
         </div>
         <div className="flex-grow bg-white/10 h-px"></div>
         <div className="font-mono uppercase text-sm">
-          {/* TODO */}
-          <Link
-            href="/"
+          <a
+            href={learnMoreUrl}
             className="text-red-500 transition hover:brightness-150"
+            target="_blank"
           >
             Learn more
-          </Link>
+          </a>
         </div>
       </div>
     </ModalContent>
