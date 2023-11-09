@@ -5,7 +5,7 @@ import { FilterForm } from "@/ui/FilterForm";
 import { FilterInput } from "@/ui/FilterInput";
 import { FilterSelect } from "@/ui/FilterSelect";
 import { ChallengeConfig } from "@/getChallengeConfig";
-import { Commitment } from "./Commitment";
+import { CommitmentRow } from "./CommitmentRow";
 import { useEffect, useState } from "react";
 import { PendingIcon } from "@/ui/icons/PendingIcon";
 import { useAccount } from "wagmi";
@@ -88,7 +88,7 @@ export function Commitments({
         <div className="border-y border-white/20 divide-y divide-white/20">
           {commitments.length ? (
             commitments.map((commitment) => (
-              <Commitment
+              <CommitmentRow
                 key={commitment.txHash}
                 latestBlockNumber={latestBlockNumber}
                 challengeConfig={challengeConfig}

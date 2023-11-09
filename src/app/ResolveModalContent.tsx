@@ -90,10 +90,10 @@ export function ResolveModalContent({
         input data will be retrieved and validated.
       </p>
       {dataResult.status === "pending" || dataResult.status === "idle" ? (
-        <Button label="Resolve challenge" pending />
+        <Button className="text-base" label="Resolve challenge" pending />
       ) : dataResult.status === "rejected" ? (
         // TODO: show more info about why this failed
-        <Button label="Could not fetch data" disabled />
+        <Button className="text-base" label="Could not fetch data" disabled />
       ) : (
         <ConnectedWriteButton
           className="text-base"
