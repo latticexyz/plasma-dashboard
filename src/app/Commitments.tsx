@@ -13,6 +13,7 @@ import { useAccount, useBlockNumber } from "wagmi";
 import { holesky } from "@/chains/holesky";
 import { CommitmentsFilter } from "@/getLatestCommitments";
 import { commitmentsFilterToSearchParams } from "@/commitmentsFilterToSearchParams";
+import { twMerge } from "tailwind-merge";
 
 type Props = {
   latestBlockNumber: bigint;
@@ -116,16 +117,19 @@ export function Commitments({
               />
             ))
           ) : (
-            <div className="p-8 text-center">No input commitments found.</div>
+            <div className="p-20 text-center">No input commitments found.</div>
           )}
         </div>
-        {isPending ? (
-          <div className="absolute inset-0 bg-neutral-950/80 flex justify-center p-8">
-            <div className="text-white text-xl">
-              <PendingIcon />
-            </div>
-          </div>
-        ) : null}
+        <div
+          className={twMerge(
+            "pointer-events-none absolute inset-0 bg-neutral-950/80 backdrop-blur-sm flex justify-center p-20",
+            "transition",
+            isPending ? "opacity-100" : "opacity-0"
+          )}
+          aria-hidden
+        >
+          <PendingIcon className="text-white text-lg" />
+        </div>
       </div>
     </div>
   );
