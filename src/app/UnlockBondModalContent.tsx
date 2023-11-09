@@ -60,6 +60,7 @@ export function UnlockBondModalContent({ commitment }: Props) {
         </LabeledBox>
       </div>
       <ConnectedWriteButton
+        className="text-base"
         label="Unlock bond"
         write={{
           chainId: holesky.id,

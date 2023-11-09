@@ -17,6 +17,10 @@ import { getBlockNumber } from "viem/actions";
 import { holesky } from "@/chains/holesky";
 import { getInputDataUrl } from "@/getInputDataUrl";
 import { EnvelopeIcon } from "@/ui/icons/EnvelopeIcon";
+import { TertiaryButtonLink } from "@/ui/TertiaryButtonLink";
+import { SecondaryButton } from "@/ui/SecondaryButton";
+import { TerminalIcon } from "@/ui/icons/TerminalIcon";
+import { CommitmentButton } from "@/app/CommitmentButton";
 
 // Force Next.js to always re-render this, otherwise it will cache the fetch for the latest block number, making it quickly stale and affecting the defaults set up deeper in the component tree.
 export const dynamic = "force-dynamic";
@@ -54,12 +58,10 @@ export default async function CommitmentPage({ params }: Props) {
       <div className="flex">
         <Link
           href="/"
-          className="flex items-center gap-2 px-2 -m-2 font-mono text-sm uppercase transition hover:text-white"
+          className="flex items-center gap-2 px-2 -m-2 font-mono uppercase transition hover:text-white"
         >
-          <span className="text-xl">
-            <ArrowLeftIcon />
-          </span>
-          <span>View all blocks</span>
+          <ArrowLeftIcon />
+          <span className="text-sm leading-none">View all blocks</span>
         </Link>
       </div>
       <div className="divide-y divide-white/20">
@@ -86,63 +88,57 @@ export default async function CommitmentPage({ params }: Props) {
         </div>
 
         <div className="flex gap-8 justify-between items-center px-3 py-6">
-          <div className="flex flex-col justify-center gap-3">
-            <div className="flex">
-              <div className="flex flex-shrink-0 w-32 gap-2 items-center">
-                <div className="flex-shrink-0">
-                  <SendIcon />
-                </div>
-                <div className="font-mono uppercase text-sm">Sender</div>
-              </div>
-              <div className="font-mono text-sm text-white">
-                {commitment.txFrom}
-              </div>
+          <div className="grid grid-cols-[max-content_auto] gap-x-8 gap-y-3 place-items-start">
+            <div className="flex items-center justify-center gap-2 text-sm">
+              <SendIcon />
+              <div className="font-mono uppercase">Sender</div>
             </div>
-            <div className="flex">
-              <div className="flex flex-shrink-0 w-32 gap-2 items-center">
-                <div className="flex-shrink-0">
-                  <InboxIcon />
-                </div>
-                <div className="font-mono uppercase text-sm">Inbox</div>
-              </div>
-              <div className="font-mono text-sm text-white">
-                {commitment.txTo}
-              </div>
+            <div className="font-mono text-sm text-white">
+              {commitment.txFrom}
             </div>
-            <div className="flex">
-              <div className="flex flex-shrink-0 w-32 gap-2 items-center">
-                <div className="flex-shrink-0">
-                  <EnvelopeIcon />
-                </div>
-                <div className="font-mono uppercase text-sm">Input hash</div>
-              </div>
-              <div className="font-mono text-sm text-white">
-                {commitment.inputHash}
-              </div>
+            <div className="flex items-center justify-center gap-2 text-sm">
+              <InboxIcon />
+              <div className="font-mono uppercase">Inbox</div>
+            </div>
+            <div className="font-mono text-sm text-white">
+              {commitment.txTo}
+            </div>
+            <div className="flex items-center justify-center gap-2 text-sm">
+              <EnvelopeIcon />
+              <div className="font-mono uppercase">Input hash</div>
+            </div>
+            <div className="font-mono text-sm text-white">
+              {commitment.inputHash}
             </div>
           </div>
-          <div className="self-stretch flex flex-col gap-2">
-            <div className="font-mono text-xs leading-none text-right">
-              TX: <TruncatedHex hex={commitment.txHash} />
-            </div>
-            <div className="flex-grow flex gap-2 justify-end items-center">
-              <Link
-                href={`${holesky.blockExplorers.default.url}/tx/${commitment.txHash}`}
-                className="flex-shrink-0 px-4 py-2 bg-white text-black font-mono uppercase text-sm"
-                target="_blank"
-                rel="noopener noreferer"
-              >
-                View tx
-              </Link>
-              <Link
-                href={getInputDataUrl(commitment.inputHash)}
-                className="flex-shrink-0 px-4 py-2 bg-white/20 text-white font-mono uppercase text-sm"
-                target="_blank"
-                rel="noopener noreferer"
-              >
-                Data
-              </Link>
-            </div>
+
+          <div className="flex-shrink-0 grid grid-cols-2 gap-2">
+            <CommitmentButton
+              className="col-span-2"
+              blockNumber={latestBlockNumber}
+              challengeConfig={challengeConfig}
+              commitment={{
+                ...commitment,
+                latestChallenge,
+              }}
+              status={getChallengeStatus(
+                latestChallenge,
+                challengeConfig,
+                latestBlockNumber
+              )}
+            />
+            <TertiaryButtonLink
+              href={`${holesky.blockExplorers.default.url}/tx/${commitment.txHash}`}
+              target="_blank"
+              rel="noopener noreferer"
+              label="View tx"
+            />
+            <TertiaryButtonLink
+              href={getInputDataUrl(commitment.inputHash)}
+              target="_blank"
+              rel="noopener noreferer"
+              label="Data"
+            />
           </div>
         </div>
         <div className="py-3">

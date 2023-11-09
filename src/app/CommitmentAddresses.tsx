@@ -9,12 +9,12 @@ type Props = {
 
 export function CommitmentAddresses({ commitment }: Props) {
   return (
-    <div className="flex flex-col justify-center gap-2">
+    <div className="flex flex-col justify-center gap-2 text-xs">
       <div className="flex gap-2 items-center">
         <div className="flex-shrink-0">
           <SendIcon />
         </div>
-        <div className="font-mono text-xs text-white">
+        <div className="font-mono text-white">
           <TruncatedHex hex={commitment.txFrom} />
         </div>
       </div>
@@ -22,7 +22,7 @@ export function CommitmentAddresses({ commitment }: Props) {
         <div className="flex-shrink-0">
           <InboxIcon />
         </div>
-        <div className="font-mono text-xs text-white">
+        <div className="font-mono text-white">
           <TruncatedHex hex={commitment.txTo} />
         </div>
       </div>

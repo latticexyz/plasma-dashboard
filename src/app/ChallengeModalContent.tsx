@@ -78,6 +78,7 @@ export function ChallengeModalContent({
         returned. If the data is proved available, your bond is burned.
       </p>
       <ConnectedWriteButton
+        className="text-base"
         label="Challenge"
         write={{
           chainId: holesky.id,

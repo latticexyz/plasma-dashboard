@@ -3,6 +3,8 @@ import { ArrowRightIcon } from "@/ui/icons/ArrowRightIcon";
 import Link from "next/link";
 import { CommitmentButton } from "./CommitmentButton";
 import { ChallengeConfig } from "@/getChallengeConfig";
+import { Button } from "@/ui/Button";
+import { TertiaryButtonLink } from "@/ui/TertiaryButtonLink";
 
 type Props = {
   blockNumber: bigint;
@@ -26,11 +28,8 @@ export function CommitmentButtons({
           commitment={commitment}
           status={status}
         />
-        <Link
-          href={`/commitments/${commitment.inputHash}`}
-          className="flex-shrink-0 px-3 py-2 bg-white/20 text-white"
-        >
-          <ArrowRightIcon />
+        <Link href={`/commitments/${commitment.inputHash}`} passHref>
+          <TertiaryButtonLink icon={<ArrowRightIcon />} />
         </Link>
       </div>
     </div>

@@ -96,6 +96,7 @@ export function ResolveModalContent({
         <Button label="Could not fetch data" disabled />
       ) : (
         <ConnectedWriteButton
+          className="text-base"
           label="Resolve challenge"
           // TODO: be able to set pending/error here or some prerequisite promise
           write={{
