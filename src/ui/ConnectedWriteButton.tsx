@@ -17,7 +17,7 @@ export function ConnectedWriteButton<
   abi extends Abi | readonly unknown[],
   functionName extends string
 >({ write, label, className }: Props<abi, functionName>) {
-  const { switchNetwork } = useSwitchNetwork();
+  const { switchNetwork, isLoading } = useSwitchNetwork();
 
   return (
     <ConnectButton.Custom>
@@ -46,6 +46,7 @@ export function ConnectedWriteButton<
             return (
               <Button
                 className={className}
+                pending={isLoading}
                 label={label}
                 labelHover="Switch network"
                 onClick={() => switchNetwork(write.chainId)}

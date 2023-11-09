@@ -1,7 +1,9 @@
+import Link from "next/link";
+import { isHex } from "viem";
+import { getBlockNumber } from "viem/actions";
 import { ChallengeStatusCell } from "@/app/ChallengeStatusCell";
 import { ChallengeStatusIndicator } from "@/app/ChallengeStatusIndicator";
 import { CommitmentBlock } from "@/app/CommitmentBlock";
-import { LabeledBox } from "@/ui/LabeledBox";
 import { TruncatedHex } from "@/ui/TruncatedHex";
 import { getChallengeConfig } from "@/getChallengeConfig";
 import { getChallengeStatus } from "@/getChallengeStatus";
@@ -10,17 +12,16 @@ import { ArrowLeftIcon } from "@/ui/icons/ArrowLeftIcon";
 import { InboxIcon } from "@/ui/icons/InboxIcon";
 import { SendIcon } from "@/ui/icons/SendIcon";
 import { client } from "@/viemClient";
-import Link from "next/link";
 import { notFound } from "next/navigation";
-import { isHex } from "viem";
-import { getBlockNumber } from "viem/actions";
-import { holesky } from "@/chains/holesky";
 import { getInputDataUrl } from "@/getInputDataUrl";
 import { EnvelopeIcon } from "@/ui/icons/EnvelopeIcon";
 import { TertiaryButtonLink } from "@/ui/TertiaryButtonLink";
-import { SecondaryButton } from "@/ui/SecondaryButton";
-import { TerminalIcon } from "@/ui/icons/TerminalIcon";
 import { CommitmentButton } from "@/app/CommitmentButton";
+import { ChallengeDetailCells } from "@/app/ChallengeDetailCells";
+import { getTransactionUrl } from "@/getTransactionUrl";
+import { ChallengeStatus } from "@/common";
+import { ArrowRightIcon } from "@/ui/icons/ArrowRightIcon";
+import { ShortTimestamp } from "@/ui/ShortTimestamp";
 
 // Force Next.js to always re-render this, otherwise it will cache the fetch for the latest block number, making it quickly stale and affecting the defaults set up deeper in the component tree.
 export const dynamic = "force-dynamic";
@@ -64,31 +65,27 @@ export default async function CommitmentPage({ params }: Props) {
           <span className="text-sm leading-none">View all blocks</span>
         </Link>
       </div>
+
       <div className="divide-y divide-white/20">
-        <div className="flex justify-between gap-8 px-3 py-5">
+        <div className="flex justify-between gap-8 px-3 py-8">
           <div className="flex gap-8">
             <CommitmentBlock commitment={commitment} />
             <ChallengeStatusCell status={status} />
           </div>
-          {/* TODO: make these dependent on status */}
           <div className="flex gap-8 text-right">
-            <LabeledBox label="Resolved by">
-              <span className="font-mono text-white">
-                {latestChallenge ? (
-                  <TruncatedHex hex={latestChallenge.txFrom} />
-                ) : (
-                  "??"
-                )}
-              </span>
-            </LabeledBox>
-            <LabeledBox label="Ended">
-              <span className="font-mono text-white">00/00 00:00</span>
-            </LabeledBox>
+            <ChallengeDetailCells
+              blockNumber={latestBlockNumber}
+              challengeConfig={challengeConfig}
+              commitment={{
+                ...commitment,
+                latestChallenge,
+              }}
+            />
           </div>
         </div>
 
-        <div className="flex gap-8 justify-between items-center px-3 py-6">
-          <div className="grid grid-cols-[max-content_auto] gap-x-8 gap-y-3 place-items-start">
+        <div className="flex gap-8 justify-between items-center px-3 py-8">
+          <div className="grid grid-cols-[max-content_auto] gap-x-8 gap-y-4 place-items-start">
             <div className="flex items-center justify-center gap-2 text-sm">
               <SendIcon />
               <div className="font-mono uppercase">Sender</div>
@@ -112,7 +109,7 @@ export default async function CommitmentPage({ params }: Props) {
             </div>
           </div>
 
-          <div className="flex-shrink-0 grid grid-cols-2 gap-2">
+          <div className="flex-shrink-0 flex flex-col gap-2">
             <CommitmentButton
               className="col-span-2"
               blockNumber={latestBlockNumber}
@@ -127,21 +124,24 @@ export default async function CommitmentPage({ params }: Props) {
                 latestBlockNumber
               )}
             />
-            <TertiaryButtonLink
-              href={`${holesky.blockExplorers.default.url}/tx/${commitment.txHash}`}
-              target="_blank"
-              rel="noopener noreferer"
-              label="View tx"
-            />
-            <TertiaryButtonLink
-              href={getInputDataUrl(commitment.inputHash)}
-              target="_blank"
-              rel="noopener noreferer"
-              label="Data"
-            />
+            <div className="flex gap-2">
+              <TertiaryButtonLink
+                href={getTransactionUrl(commitment.txHash)}
+                target="_blank"
+                rel="noopener noreferer"
+                label="View tx"
+              />
+              <TertiaryButtonLink
+                href={getInputDataUrl(commitment.inputHash)}
+                target="_blank"
+                rel="noopener noreferer"
+                label="Data"
+              />
+            </div>
           </div>
         </div>
-        <div className="py-3">
+
+        <div className="py-8">
           <table className="w-full">
             <thead>
               <tr>
@@ -171,25 +171,42 @@ export default async function CommitmentPage({ params }: Props) {
                   );
                   return (
                     <tr key={challenge.txHash}>
-                      <td className="p-3 font-mono uppercase text-sm text-white">
+                      <td className="p-2 font-mono uppercase text-sm text-white">
                         <ChallengeStatusIndicator status={status} />
                       </td>
-                      <td className="p-3 font-mono uppercase text-sm text-white">
+                      <td className="p-2 font-mono text-sm text-white">
                         <TruncatedHex hex={challenge.txFrom} />
                       </td>
-                      <td className="p-3 font-mono uppercase text-sm text-white">
-                        TODO window
+                      <td className="p-2 font-mono uppercase text-sm text-white">
+                        {status === ChallengeStatus.Challenged ? (
+                          <span className="flex items-center gap-2">
+                            {challenge.blockNumber.toString()}
+                            <ArrowRightIcon className="text-xs" />
+                            {(
+                              challenge.blockNumber +
+                              challengeConfig.resolveWindowBlocks
+                            ).toString()}
+                          </span>
+                        ) : null}
                       </td>
-                      <td className="p-3 font-mono uppercase text-sm text-white">
-                        <TruncatedHex hex={challenge.txHash} />
+                      <td className="p-2 font-mono text-sm text-white">
+                        <a
+                          href={getTransactionUrl(challenge.txHash)}
+                          target="_blank"
+                          rel="noopener noreferer"
+                        >
+                          <TruncatedHex hex={challenge.txHash} />
+                        </a>
                       </td>
-                      <td>TODO time ago</td>
+                      <td className="font-mono text-sm text-right">
+                        <ShortTimestamp timestamp={challenge.blockTimestamp} />
+                      </td>
                     </tr>
                   );
                 })
               ) : (
                 <tr>
-                  <td colSpan={5} className="p-3 text-center">
+                  <td colSpan={5} className="p-4 text-center">
                     This input commitment has not been challenged.
                   </td>
                 </tr>

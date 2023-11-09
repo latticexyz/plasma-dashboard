@@ -61,7 +61,7 @@ export function WriteButton<
         onProgress("Finalizing transaction…");
 
         // TODO: figure out why calling `waitForTransactionReceipt` immediately results in a `TransactionReceiptNotFoundError`
-        await wait(250);
+        await wait(500);
 
         const receiptPromise = waitForTransactionReceipt(
           // TODO: ugh why

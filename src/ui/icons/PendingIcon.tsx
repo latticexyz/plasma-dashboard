@@ -10,7 +10,7 @@ export function PendingIcon({ className, ...props }: Props) {
   return (
     <svg
       className={twMerge(
-        "animate-spin w-[1.25em] h-[1.25em] -my-[0.25em]",
+        "animate-spin w-[1.25em] h-[1.25em] -my-[0.125em]",
         className
       )}
       xmlns="http://www.w3.org/2000/svg"
