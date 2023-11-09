@@ -1,13 +1,9 @@
-import {
-  CommitmentsFilter,
-  getLatestCommitments,
-} from "@/getLatestCommitments";
+import { getLatestCommitments } from "@/getLatestCommitments";
 import { getBlockNumber } from "viem/actions";
 import { client } from "@/viemClient";
 import { getChallengeConfig } from "@/getChallengeConfig";
 import { Commitments } from "./Commitments";
-import { isAddress } from "viem";
-import { ChallengeStatus } from "@/common";
+import { searchParamsToCommitmentsFilter } from "../searchParamsToCommitmentsFilter";
 
 // Force Next.js to always re-render this, otherwise it will cache the fetch for the latest block number, making it quickly stale and affecting the defaults set up deeper in the component tree.
 export const dynamic = "force-dynamic";
@@ -23,32 +19,11 @@ export default async function HomePage({ searchParams }: Props) {
     getChallengeConfig(client),
   ]);
 
-  const filter: CommitmentsFilter = { latestBlockNumber, challengeConfig };
-
-  // TODO: parse with zod?
-
-  const fromBlock = searchParams.fromBlock;
-  if (typeof fromBlock === "string" && /^\d+$/.test(fromBlock)) {
-    filter.fromBlock = BigInt(fromBlock);
-  }
-
-  const toBlock = searchParams.toBlock;
-  if (typeof toBlock === "string" && /^\d+$/.test(toBlock)) {
-    filter.toBlock = BigInt(toBlock);
-  }
-
-  const from = searchParams.from;
-  if (typeof from === "string" && isAddress(from)) {
-    filter.from = from;
-  }
-
-  const status = searchParams.status;
-  if (
-    typeof status === "string" &&
-    Object.values(ChallengeStatus).includes(status as ChallengeStatus)
-  ) {
-    filter.status = status as ChallengeStatus;
-  }
+  const filter = searchParamsToCommitmentsFilter(
+    new URLSearchParams(searchParams),
+    latestBlockNumber,
+    challengeConfig
+  );
 
   // TODO: figure out how we want to poll for new commitments and how to bring in the new ones
   const commitments = await getLatestCommitments(filter);
@@ -75,6 +50,7 @@ export default async function HomePage({ searchParams }: Props) {
         latestBlockNumber={latestBlockNumber}
         challengeConfig={challengeConfig}
         commitments={commitments}
+        filter={filter}
       />
     </div>
   );
