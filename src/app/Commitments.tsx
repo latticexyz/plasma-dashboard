@@ -44,7 +44,7 @@ export function Commitments({
       .then((res) => res.json())
       .then((json) => superjson.deserialize(json))
       .then((json: any) => setCommitments(json.commitments));
-  }, [blockNumber]);
+  }, [blockNumber, filter]);
 
   useEffect(() => {
     setPending(false);
