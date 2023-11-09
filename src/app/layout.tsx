@@ -30,11 +30,7 @@ export default function Layout({ children }: Props) {
     >
       <body>
         <WalletProvider>
-          {/* TODO: move this to a better spot */}
-          <ConnectButton />
-
           <div className="mx-auto max-w-screen-lg py-16">{children}</div>
-
           <ToastContainer position="bottom-right" theme="dark" />
         </WalletProvider>
       </body>
