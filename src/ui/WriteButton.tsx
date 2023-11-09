@@ -23,12 +23,13 @@ export type Props<
 > = {
   label: ReactNode;
   write: UsePrepareContractWriteConfig<abi, functionName, number>;
+  className?: string;
 };
 
 export function WriteButton<
   abi extends Abi | readonly unknown[],
   functionName extends string
->({ write: writeArgs, label }: Props<abi, functionName>) {
+>({ write: writeArgs, label, className }: Props<abi, functionName>) {
   const publicClient = usePublicClient({ chainId: writeArgs.chainId });
   const memoizedWriteArgs = useDeepMemo(writeArgs);
   const prepareResult = usePrepareContractWrite(memoizedWriteArgs);
@@ -86,24 +87,34 @@ export function WriteButton<
   // TODO: invalidate cache or otherwise reload tx data
 
   if (prepareResult.isLoading) {
-    return <Button label={label} pending title="Estimating gas…" />;
+    return (
+      <Button
+        className={className}
+        label={label}
+        pending
+        title="Estimating gas…"
+      />
+    );
   }
 
   if (writeResult.isLoading) {
-    return <Button label={label} pending />;
+    return <Button className={className} label={label} pending />;
   }
 
   if (transactionResult.isLoading) {
-    return <Button label={label} pending />;
+    return <Button className={className} label={label} pending />;
   }
 
   if (prepareResult.isError) {
     // TODO: display better message for specific kinds of errors (eth balance, etc)
-    return <Button label="Could not estimate gas" disabled />;
+    return (
+      <Button className={className} label="Could not estimate gas" disabled />
+    );
   }
 
   return (
     <Button
+      className={className}
       label={label}
       pending={writeResult.isLoading}
       onClick={(event) => {

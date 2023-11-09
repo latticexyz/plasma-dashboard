@@ -16,7 +16,6 @@ export function Button({
   className,
   pending,
   disabled,
-  title,
   label,
   labelHover,
   ...props
@@ -28,17 +27,18 @@ export function Button({
       aria-disabled={disabled}
       // TODO: disable click handlers during pending/disabled?
       className={twMerge(
-        "group bg-red-500 text-white font-mono uppercase leading-none transition hover:brightness-125",
+        "group bg-red-500 text-white font-mono uppercase text-sm",
+        "transition hover:brightness-125",
         "aria-[busy=true]:bg-red-800 aria-[busy=true]:cursor-default",
         "aria-[disabled=true]:bg-neutral-800 aria-[disabled=true]:text-white/40 aria-[disabled=true]:cursor-not-allowed",
         className
       )}
       {...props}
     >
-      <span className="inline-grid place-items-center pointer-events-none overflow-hidden p-4">
+      <span className="inline-grid place-items-center pointer-events-none overflow-hidden p-[1em]">
         <span
           className={twMerge(
-            "row-start-1 col-start-1",
+            "row-start-1 col-start-1 leading-none",
             "transition opacity-100 translate-y-0",
             labelHover
               ? "group-hover:opacity-0 group-hover:-translate-y-3"
@@ -53,7 +53,7 @@ export function Button({
           <span
             aria-hidden
             className={twMerge(
-              "row-start-1 col-start-1",
+              "row-start-1 col-start-1 leading-none",
               "transition opacity-0 translate-y-3",
               "group-hover:opacity-100 group-hover:translate-y-0",
               "group-aria-[busy=true]:opacity-0 group-aria-[busy=true]:-translate-y-3"

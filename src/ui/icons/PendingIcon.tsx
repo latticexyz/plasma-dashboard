@@ -1,7 +1,18 @@
-export function PendingIcon() {
+import { DetailedHTMLProps, SVGAttributes } from "react";
+import { twMerge } from "tailwind-merge";
+
+export type Props = DetailedHTMLProps<
+  SVGAttributes<SVGSVGElement>,
+  SVGSVGElement
+>;
+
+export function PendingIcon({ className, ...props }: Props) {
   return (
     <svg
-      className="animate-spin w-[1em] h-[1em]"
+      className={twMerge(
+        "animate-spin w-[1.25em] h-[1.25em] -my-[0.25em]",
+        className
+      )}
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
       viewBox="0 0 24 24"

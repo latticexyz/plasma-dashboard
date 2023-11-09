@@ -1,3 +1,5 @@
+"use client";
+
 import { InputCommitment, ChallengeStatus } from "@/common";
 import { TerminalIcon } from "@/ui/icons/TerminalIcon";
 import { ChallengeConfig } from "@/getChallengeConfig";
@@ -5,12 +7,14 @@ import { Modal } from "@/ui/Modal";
 import { ChallengeModalContent } from "./ChallengeModalContent";
 import { ResolveModalContent } from "./ResolveModalContent";
 import { UnlockBondModalContent } from "./UnlockBondModalContent";
+import { SecondaryButton } from "@/ui/SecondaryButton";
 
 type Props = {
   blockNumber: bigint;
   challengeConfig: ChallengeConfig;
   commitment: InputCommitment;
   status: ChallengeStatus;
+  className?: string;
 };
 
 export function CommitmentButton({
@@ -18,18 +22,17 @@ export function CommitmentButton({
   challengeConfig,
   commitment,
   status,
+  className,
 }: Props) {
   if (status === ChallengeStatus.Unchallenged) {
     return (
       <Modal
         trigger={
-          <button
-            type="button"
-            className="flex-grow flex items-center px-3 py-2 gap-2 bg-white text-black"
-          >
-            <TerminalIcon />
-            <span className="font-mono uppercase text-xs">Challenge</span>
-          </button>
+          <SecondaryButton
+            className={className}
+            icon={<TerminalIcon />}
+            label="Challenge"
+          />
         }
       >
         <ChallengeModalContent
@@ -47,13 +50,11 @@ export function CommitmentButton({
     return (
       <Modal
         trigger={
-          <button
-            type="button"
-            className="flex-grow flex items-center px-3 py-2 gap-2 bg-white text-black"
-          >
-            <TerminalIcon />
-            <span className="font-mono uppercase text-xs">Resolve</span>
-          </button>
+          <SecondaryButton
+            className={className}
+            icon={<TerminalIcon />}
+            label="Resolve"
+          />
         }
       >
         <ResolveModalContent
@@ -70,13 +71,11 @@ export function CommitmentButton({
     return (
       <Modal
         trigger={
-          <button
-            type="button"
-            className="flex-grow flex items-center px-3 py-2 gap-2 bg-white text-black"
-          >
-            <TerminalIcon />
-            <span className="font-mono uppercase text-xs">Unlock bond</span>
-          </button>
+          <SecondaryButton
+            className={className}
+            icon={<TerminalIcon />}
+            label="Unlock bond"
+          />
         }
       >
         <UnlockBondModalContent commitment={commitment} />

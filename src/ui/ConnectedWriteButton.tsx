@@ -16,19 +16,20 @@ type Props<
 export function ConnectedWriteButton<
   abi extends Abi | readonly unknown[],
   functionName extends string
->({ write, label }: Props<abi, functionName>) {
+>({ write, label, className }: Props<abi, functionName>) {
   const { switchNetwork } = useSwitchNetwork();
 
   return (
     <ConnectButton.Custom>
       {({ mounted, account, chain, openConnectModal }) => {
         if (!mounted) {
-          return <Button label={label} disabled />;
+          return <Button className={className} label={label} disabled />;
         }
 
         if (!account) {
           return (
             <Button
+              className={className}
               label={label}
               labelHover="Connect wallet"
               onClick={openConnectModal}
@@ -44,6 +45,7 @@ export function ConnectedWriteButton<
           if (switchNetwork) {
             return (
               <Button
+                className={className}
                 label={label}
                 labelHover="Switch network"
                 onClick={() => switchNetwork(write.chainId)}
@@ -51,11 +53,15 @@ export function ConnectedWriteButton<
             );
           } else {
             // TODO: improve the messaging for this state
-            return <Button label="Wrong network" disabled />;
+            return (
+              <Button className={className} label="Wrong network" disabled />
+            );
           }
         }
 
-        return <WriteButton write={write} label={label} />;
+        return (
+          <WriteButton className={className} write={write} label={label} />
+        );
       }}
     </ConnectButton.Custom>
   );
