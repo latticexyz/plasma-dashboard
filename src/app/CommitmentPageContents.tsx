@@ -69,7 +69,7 @@ export function CommitmentPageContents({
           className="flex items-center gap-2 px-2 -m-2 font-mono uppercase transition hover:text-white"
         >
           <ArrowLeftIcon />
-          <span className="text-sm leading-none">View all blocks</span>
+          <span className="text-sm leading-none">View all commitments</span>
         </Link>
       </div>
 

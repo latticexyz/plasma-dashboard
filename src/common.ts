@@ -31,8 +31,11 @@ export enum ChallengeStatus {
   Unknown = "unknown",
 }
 
-// TODO: is hardcoding this enough of an estimate for challenge windows?
+// TODO: move this to chain config?
 export const secondsPerBlock = 12;
+
+// TODO: replace with real learn more link once we have redstone docs
+export const learnMoreUrl = "https://lattice.xyz/";
 
 if (!isHex(process.env.NEXT_PUBLIC_BATCHER, { strict: true })) {
   throw new Error(

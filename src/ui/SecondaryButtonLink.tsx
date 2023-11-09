@@ -9,7 +9,7 @@ type Props = Omit<
   icon?: ReactNode;
 };
 
-export function SecondaryButton({
+export function SecondaryButtonLink({
   type,
   className,
   label,

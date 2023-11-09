@@ -28,13 +28,10 @@ export default function Layout({ children }: Props) {
       lang="en"
       className={twMerge("bg-black text-white/50", inter.className)}
     >
-      <body>
+      {/* TODO: remove border once we have layout chrome */}
+      <body className="border-t-8 border-red-500">
         <WalletProvider>
-          {/* TODO: move this to a better spot */}
-          <ConnectButton />
-
           <div className="mx-auto max-w-screen-lg py-16">{children}</div>
-
           <ToastContainer position="bottom-right" theme="dark" />
         </WalletProvider>
       </body>

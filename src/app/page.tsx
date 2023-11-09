@@ -4,6 +4,9 @@ import { client } from "@/viemClient";
 import { getChallengeConfig } from "@/getChallengeConfig";
 import { Commitments } from "./Commitments";
 import { searchParamsToCommitmentsFilter } from "../searchParamsToCommitmentsFilter";
+import Link from "next/link";
+import { learnMoreUrl } from "@/common";
+import { TertiaryButtonLink } from "@/ui/TertiaryButtonLink";
 
 // Force Next.js to always re-render this, otherwise it will cache the fetch for the latest block number, making it quickly stale and affecting the defaults set up deeper in the component tree.
 export const dynamic = "force-dynamic";
@@ -39,12 +42,12 @@ export default async function HomePage({ searchParams }: Props) {
             Browse & inspect data availability challenges on Redstone.
           </p>
         </div>
-        <button
-          type="button"
-          className="bg-red-500 text-white font-mono uppercase px-4 py-3"
-        >
-          Learn more
-        </button>
+        <TertiaryButtonLink
+          href={learnMoreUrl}
+          label="Learn more"
+          className="bg-red-500 text-base"
+          target="_blank"
+        />
       </div>
       <Commitments
         latestBlockNumber={latestBlockNumber}

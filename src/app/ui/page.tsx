@@ -20,7 +20,12 @@ export default function UIPage() {
       <div className="flex gap-2 items-center">
         <Button label="Button" onClick={() => alert("click")} />
         <Button label="Pending" pending onClick={() => alert("click")} />
-        <Button label="Disabled" disabled onClick={() => alert("click")} />
+        <Button
+          label="Disabled"
+          labelHover="Error"
+          disabled
+          onClick={() => alert("click")}
+        />
       </div>
       <div className="flex gap-2 items-center">
         <Button label="text-xs" className="text-xs" />

@@ -50,8 +50,11 @@ export function CommitmentRow({
           commitment={commitment}
           status={status}
         />
-        {/* TODO: passHref isn't working */}
-        <Link passHref href={`/commitments/${commitment.inputHash}`}>
+        <Link
+          legacyBehavior
+          passHref
+          href={`/commitments/${commitment.inputHash}`}
+        >
           <TertiaryButtonLink icon={<ArrowRightIcon />} />
         </Link>
       </div>
