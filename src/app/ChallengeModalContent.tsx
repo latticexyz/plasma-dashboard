@@ -37,7 +37,7 @@ export function ChallengeModalContent({
   return (
     <ModalContent
       title="Challenge"
-      description="If data is not retrievable, challenge the the commitment to force the data provider to make the data available, or the network considers the input no longer valid."
+      description="If data is not retrievable, challenge the commitment to force the data provider to make the data available, or the network considers the input no longer valid."
     >
       <div className="grid grid-cols-2 gap-4">
         <LabeledBox label="Block number">
