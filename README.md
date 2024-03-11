@@ -1,3 +1,6 @@
+> [!CAUTION]
+> The dashboard and indexer currently ARE NOT compatible with the latest version of [op-plasma](https://github.com/ethereum-optimism/specs/blob/main/specs/experimental/plasma.md). Watch this repo for updates.
+
 ### Running e2pg
 
 ```bash
